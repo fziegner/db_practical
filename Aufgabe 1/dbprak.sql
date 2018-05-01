@@ -1,4 +1,4 @@
-	CREATE TABLE continent(
+CREATE TABLE continent(
 	continentName varchar(32),
 	PRIMARY KEY(continentName)
 	);
@@ -63,3 +63,72 @@ CREATE TABLE has_EmailAddress(
 	FOREIGN KEY(email) REFERENCES emailAddress,
 	FOREIGN KEY(personID) REFERENCES person
 	);
+	
+CREATE TABLE company(
+	companyName varchar(128),
+	countryName varchar(128),
+	PRIMARY KEY(companyName),
+	FOREIGN KEY(countryName) REFERENCES country
+	);
+	
+CREATE TABLE work_at(
+	personID integer,
+	companyName varchar(128),
+	workFrom integer,
+	PRIMARY KEY(personID, companyName),
+	FOREIGN KEY(personID) REFERENCES person,
+	FOREIGN KEY(companyName) REFERENCES company
+	);
+	
+CREATE TABLE studyAt(
+	personID integer,
+	universityName varchar(128),
+	classYear integer,
+	PRIMARY KEY(personID, universityName),
+	FOREIGN KEY(personID) REFERENCES person,
+	FOREIGN KEY(universityName) REFERENCES university
+	);
+	
+CREATE TABLE comment(
+	creationDate timestamp,
+	creatorID integer,
+	browserUsed varchar(64),
+	locationIP inet,
+	content text,
+	length integer,
+	replyOfComment integer,
+	replyOfPost integer,
+	locationName varchar(128),
+	PRIMARY KEY(creationDate, creatorID),
+	FOREIGN KEY(creatorID) REFERENCES person,
+	FOREIGN KEY(locationName) REFERENCES country
+	);
+	
+CREATE TABLE forum(
+	forumTitle varchar(128),
+	creationDate timestamp,
+	PRIMARY KEY(forumTitle)
+	);
+	
+CREATE TABLE tag(
+	tagName varchar(128)
+	PRIMARY KEY(tagName)
+	);
+
+CREATE TABLE post(
+	creationDate timestamp,
+	creatorID integer,
+	languageName varchar(32),
+	imageFile varchar(128),
+	browserUsed varchar(64),
+	locationIP inet,
+	content text,
+	length integer,
+	locationName varchar(128),
+	containerForum integer,
+	PRIMARY KEY(creationDate, creatorID),
+	FOREIGN KEY(creatorID) REFERENCES person,
+	FOREIGN KEY(locationName) REFERENCES country,
+	FOREIGN KEY(containerForum) REFERENCES forum
+	);
+	
