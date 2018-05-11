@@ -7,34 +7,34 @@ CREATE TABLE country(
 	countryName varchar(128),
 	continentName varchar(32),
 	PRIMARY KEY(countryName),
-	FOREIGN KEY(continentName) REFERENCES continent
+	FOREIGN KEY(continentName) REFERENCES continent ON UPDATE CASCADE
 	);
 	
 CREATE TABLE city(
 	cityName varchar(128),
 	countryName varchar(128),
 	PRIMARY KEY(cityName),
-	FOREIGN KEY(countryName) REFERENCES country
+	FOREIGN KEY(countryName) REFERENCES country ON UPDATE CASCADE
 	);	
 	
 CREATE TABLE university(
 	universityName varchar(128),
 	cityName varchar(128),
 	PRIMARY KEY(universityName),
-	FOREIGN KEY(cityName) REFERENCES city
+	FOREIGN KEY(cityName) REFERENCES city ON UPDATE CASCADE
 	);
 	
 CREATE TABLE person(
 	personID integer,
-	creationDate timestamp,
-	firstName varchar(64),
-	lastName varchar(64),
+	creationDate timestamp NOT NULL,
+	firstName varchar(64) NOT NULL,
+	lastName varchar(64) NOT NULL,
 	gender varchar(8),
 	birthday date,
 	browserUsed varchar(64),
 	locationIP inet,
 	cityName varchar(64),
-	PRIMARY KEY(id),
+	PRIMARY KEY(personID),
 	FOREIGN KEY(cityName) REFERENCES city
 	);
 	
@@ -66,7 +66,7 @@ CREATE TABLE has_EmailAddress(
 	
 CREATE TABLE company(
 	companyName varchar(128),
-	countryName varchar(128),
+	countryName varchar(128) NOT NULL,
 	PRIMARY KEY(companyName),
 	FOREIGN KEY(countryName) REFERENCES country
 	);
@@ -93,12 +93,12 @@ CREATE TABLE comment(
 	creationDate timestamp,
 	creatorID integer,
 	browserUsed varchar(64),
-	locationIP inet,
+	locationIP inet NOT NULL,
 	content text,
 	length integer,
 	replyOfComment integer,
 	replyOfPost integer,
-	locationName varchar(128),
+	locationName varchar(128) NOT NULL,
 	PRIMARY KEY(creatorID, creationDate),
 	FOREIGN KEY(creatorID) REFERENCES person,
 	FOREIGN KEY(locationName) REFERENCES country
@@ -107,7 +107,7 @@ CREATE TABLE comment(
 CREATE TABLE forum(
 	forumID integer,
 	forumTitle varchar(128),
-	creationDate timestamp,
+	creationDate timestamp NOT NULL,
 	PRIMARY KEY(forumID)
 	);
 	
@@ -122,11 +122,11 @@ CREATE TABLE post(
 	languageName varchar(32),
 	imageFile varchar(128),
 	browserUsed varchar(64),
-	locationIP inet,
+	locationIP inet NOT NULL,
 	content text,
 	length integer,
-	locationName varchar(128),
-	containerForum integer,
+	locationName varchar(128) NOT NULL,
+	containerForum integer NOT NULL,
 	PRIMARY KEY(creatorID, creationDate),
 	FOREIGN KEY(creatorID) REFERENCES person,
 	FOREIGN KEY(locationName) REFERENCES country,
@@ -136,7 +136,7 @@ CREATE TABLE post(
 CREATE TABLE has_Interest(
 	tagName varchar(128),
 	personID integer,
-	PRIMARY KEY(tagName),
+	PRIMARY KEY(personID, tagName),
 	FOREIGN KEY(tagName) REFERENCES tag,
 	FOREIGN KEY(personID) REFERENCES person
 	);
@@ -162,7 +162,7 @@ CREATE TABLE likes_Post(
 CREATE TABLE has_Member(
 	personID integer,
 	forumID integer,
-	joinDate timestamp,
+	joinDate timestamp NOT NULL,
 	PRIMARY KEY(personID, forumID),
 	FOREIGN KEY(personID) REFERENCES person,
 	FOREIGN KEY(forumID) REFERENCES forum
@@ -184,7 +184,7 @@ CREATE TABLE has_Type(
 CREATE TABLE forum_Has_Tag(
 	tagName varchar(128),
 	forumID integer,
-	PRIMARY KEY(tagName),
+	PRIMARY KEY(forumID, tagName),
 	FOREIGN KEY(forumID) REFERENCES forum
 	);
 	
