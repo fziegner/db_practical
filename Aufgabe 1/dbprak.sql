@@ -35,7 +35,7 @@ CREATE TABLE person(
 	locationIP inet,
 	cityName varchar(64),
 	PRIMARY KEY(personID),
-	FOREIGN KEY(cityName) REFERENCES city
+	FOREIGN KEY(cityName) REFERENCES city ON UPDATE CASCADE
 	);
 	
 CREATE TABLE language(
@@ -49,6 +49,8 @@ CREATE TABLE speaks_Language(
 	PRIMARY KEY(languageName, personID),
 	FOREIGN KEY(languageName) REFERENCES language,
 	FOREIGN KEY(personID) REFERENCES person
+			ON UPDATE CASCADE
+			ON DELETE CASCADE
 	);
 
 CREATE TABLE emailAddress(
@@ -62,13 +64,15 @@ CREATE TABLE has_EmailAddress(
 	PRIMARY KEY(email, personID),
 	FOREIGN KEY(email) REFERENCES emailAddress,
 	FOREIGN KEY(personID) REFERENCES person
+			ON UPDATE CASCADE
+			ON DELETE CASCADE
 	);
 	
 CREATE TABLE company(
 	companyName varchar(128),
 	countryName varchar(128) NOT NULL,
 	PRIMARY KEY(companyName),
-	FOREIGN KEY(countryName) REFERENCES country
+	FOREIGN KEY(countryName) REFERENCES country ON UPDATE CASCADE
 	);
 	
 CREATE TABLE work_At(
@@ -76,8 +80,12 @@ CREATE TABLE work_At(
 	companyName varchar(128),
 	workFrom integer,
 	PRIMARY KEY(personID, companyName),
-	FOREIGN KEY(personID) REFERENCES person,
+	FOREIGN KEY(personID) REFERENCES person
+			ON UPDATE CASCADE
+			ON DELETE CASCADE,
 	FOREIGN KEY(companyName) REFERENCES company
+			ON UPDATE CASCADE
+			ON DELETE CASCADE
 	);
 	
 CREATE TABLE study_At(
@@ -85,8 +93,12 @@ CREATE TABLE study_At(
 	universityName varchar(128),
 	classYear integer,
 	PRIMARY KEY(personID, universityName),
-	FOREIGN KEY(personID) REFERENCES person,
+	FOREIGN KEY(personID) REFERENCES person
+			ON UPDATE CASCADE
+			ON DELETE CASCADE,
 	FOREIGN KEY(universityName) REFERENCES university
+			ON UPDATE CASCADE
+			ON DELETE CASCADE
 	);
 	
 CREATE TABLE comment(
@@ -100,7 +112,8 @@ CREATE TABLE comment(
 	replyOfPost integer,
 	locationName varchar(128) NOT NULL,
 	PRIMARY KEY(creatorID, creationDate),
-	FOREIGN KEY(creatorID) REFERENCES person,
+	FOREIGN KEY(creatorID) REFERENCES person
+			ON DELETE CASCADE,
 	FOREIGN KEY(locationName) REFERENCES country
 	);
 	
@@ -128,7 +141,8 @@ CREATE TABLE post(
 	locationName varchar(128) NOT NULL,
 	containerForum integer NOT NULL,
 	PRIMARY KEY(creatorID, creationDate),
-	FOREIGN KEY(creatorID) REFERENCES person,
+	FOREIGN KEY(creatorID) REFERENCES person
+			ON DELETE CASCADE,
 	FOREIGN KEY(locationName) REFERENCES country,
 	FOREIGN KEY(containerForum) REFERENCES forum
 	);
@@ -137,8 +151,12 @@ CREATE TABLE has_Interest(
 	tagName varchar(128),
 	personID integer,
 	PRIMARY KEY(personID, tagName),
-	FOREIGN KEY(tagName) REFERENCES tag,
+	FOREIGN KEY(tagName) REFERENCES tag
+			ON UPDATE CASCADE
+			ON DELETE CASCADE,
 	FOREIGN KEY(personID) REFERENCES person
+			ON UPDATE CASCADE
+			ON DELETE CASCADE
 	);
 	
 CREATE TABLE likes_Comment(
@@ -155,8 +173,12 @@ CREATE TABLE likes_Post(
 	creationDate timestamp,
 	creatorID integer,
 	PRIMARY KEY(personID, creationDate, creatorID),
-	FOREIGN KEY(personID) REFERENCES person,
+	FOREIGN KEY(personID) REFERENCES person
+			ON UPDATE CASCADE
+			ON DELETE CASCADE,
 	FOREIGN KEY(creatorID, creationDate) REFERENCES post 
+			ON UPDATE CASCADE
+			ON DELETE CASCADE
 	);
 	
 CREATE TABLE has_Member(
@@ -164,8 +186,12 @@ CREATE TABLE has_Member(
 	forumID integer,
 	joinDate timestamp NOT NULL,
 	PRIMARY KEY(personID, forumID),
-	FOREIGN KEY(personID) REFERENCES person,
+	FOREIGN KEY(personID) REFERENCES person
+			ON UPDATE CASCADE
+			ON DELETE CASCADE,
 	FOREIGN KEY(forumID) REFERENCES forum
+			ON UPDATE CASCADE
+			ON DELETE CASCADE
 	);
 	
 CREATE TABLE tag_Class(
@@ -177,8 +203,12 @@ CREATE TABLE has_Type(
 	tagClassName varchar(128),
 	tagName varchar(128),
 	PRIMARY KEY(tagClassName, tagName),
-	FOREIGN KEY(tagClassName) REFERENCES tag_Class,
+	FOREIGN KEY(tagClassName) REFERENCES tag_Class
+			ON UPDATE CASCADE
+			ON DELETE CASCADE,
 	FOREIGN KEY(tagName) REFERENCES tag
+			ON UPDATE CASCADE
+			ON DELETE CASCADE
 	);
 	
 CREATE TABLE forum_Has_Tag(
@@ -186,6 +216,8 @@ CREATE TABLE forum_Has_Tag(
 	forumID integer,
 	PRIMARY KEY(forumID, tagName),
 	FOREIGN KEY(forumID) REFERENCES forum
+			ON UPDATE CASCADE
+			ON DELETE CASCADE
 	);
 	
 CREATE TABLE comment_Has_Tag(
@@ -194,6 +226,8 @@ CREATE TABLE comment_Has_Tag(
 	creatorID integer,
 	PRIMARY KEY(tagName),
 	FOREIGN KEY(creatorID, creationDate) REFERENCES comment
+			ON UPDATE CASCADE
+			ON DELETE CASCADE
 	);
 	
 CREATE TABLE post_Has_Tag(
@@ -202,4 +236,6 @@ CREATE TABLE post_Has_Tag(
 	creatorID integer,
 	PRIMARY KEY(tagName),
 	FOREIGN KEY(creatorID, creationDate) REFERENCES post
+			ON UPDATE CASCADE
+			ON DELETE CASCADE
 	);
