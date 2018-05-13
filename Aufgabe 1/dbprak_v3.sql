@@ -39,19 +39,14 @@ CREATE TABLE person(
 	locationIP inet,
 	city integer,
 	PRIMARY KEY(personID),
-	FOREIGN KEY(city) REFERENCES city ON UPDATE CASCADE
-	);
-	
-CREATE TABLE language(
-	languageName varchar(32),
-	PRIMARY KEY(languageName)
+	FOREIGN KEY(city) REFERENCES city ON UPDATE CASCADE,
+	CHECK (birthday < current_date)
 	);
 	
 CREATE TABLE speaks_Language(
 	languageName varchar(32),
-	personID integer,
+	personID bigint,
 	PRIMARY KEY(languageName, personID),
-	FOREIGN KEY(languageName) REFERENCES language,
 	FOREIGN KEY(personID) REFERENCES person
 			ON UPDATE CASCADE
 			ON DELETE CASCADE
@@ -64,12 +59,13 @@ CREATE TABLE emailAddress(
 	
 CREATE TABLE has_EmailAddress(
 	email varchar(128),
-	personID integer,
+	personID bigint,
 	PRIMARY KEY(email, personID),
 	FOREIGN KEY(email) REFERENCES emailAddress,
 	FOREIGN KEY(personID) REFERENCES person
 			ON UPDATE CASCADE
-			ON DELETE CASCADE
+			ON DELETE CASCADE,
+	CHECK (email LIKE '%_@__%.__%')
 	);
 	
 CREATE TABLE company(
@@ -81,7 +77,7 @@ CREATE TABLE company(
 	);
 	
 CREATE TABLE work_At(
-	personID integer,
+	personID bigint,
 	company integer,
 	workFrom integer,
 	PRIMARY KEY(personID, company),
@@ -94,7 +90,7 @@ CREATE TABLE work_At(
 	);
 	
 CREATE TABLE study_At(
-	personID integer,
+	personID bigint,
 	university integer,
 	classYear integer,
 	PRIMARY KEY(personID, university),
@@ -107,9 +103,10 @@ CREATE TABLE study_At(
 	);
 	
 CREATE TABLE forum(
-	forumID integer,
+	forumID bigint,
 	forumTitle varchar(128),
 	creationDate timestamp NOT NULL,
+	moderator bigint,
 	PRIMARY KEY(forumID)
 	);
 	
@@ -126,17 +123,17 @@ CREATE TABLE tag_Class(
 	);	
 	
 CREATE TABLE post(
-	postID integer,
+	postID bigint,
 	creationDate timestamp,
-	creatorID integer,
-	/*languageName varchar(32),*/
+	creatorID bigint,
+	languageName varchar(32),
 	imageFile varchar(128),
 	browserUsed varchar(64),
 	locationIP inet NOT NULL,
 	content text,
 	length integer,
 	location integer NOT NULL,
-	containerForum integer NOT NULL,
+	containerForum bigint NOT NULL,
 	PRIMARY KEY(postID),
 	FOREIGN KEY(creatorID) REFERENCES person
 			ON DELETE CASCADE,
@@ -145,16 +142,16 @@ CREATE TABLE post(
 	);
 
 CREATE TABLE comment(
-	commentID integer,
+	commentID bigint,
 	creationDate timestamp,
-	creatorID integer,
+	creatorID bigint,
 	browserUsed varchar(64),
 	locationIP inet NOT NULL,
 	content text,
 	length integer,
-	replyOfComment integer,
-	replyOfPost integer,
-	location integer NOT NULL,
+	replyOfComment bigint,
+	replyOfPost bigint,
+	location integer,
 	PRIMARY KEY(commentID),
 	FOREIGN KEY(creatorID) REFERENCES person
 			ON DELETE CASCADE,
@@ -163,7 +160,7 @@ CREATE TABLE comment(
 	
 CREATE TABLE has_Interest(
 	tag integer,
-	personID integer,
+	personID bigint,
 	PRIMARY KEY(personID, tag),
 	FOREIGN KEY(tag) REFERENCES tag
 			ON UPDATE CASCADE
@@ -174,36 +171,28 @@ CREATE TABLE has_Interest(
 	);	
 		
 CREATE TABLE likes_Post(
-	personID integer,
-	postID integer,
-	/*creationDate timestamp,
-	creatorID integer,*/
-	PRIMARY KEY(personID, /*creationDate, creatorID*/postID),
+	personID bigint,
+	postID bigint,
+	PRIMARY KEY(personID, postID),
 	FOREIGN KEY(personID) REFERENCES person
 			ON UPDATE CASCADE
 			ON DELETE CASCADE,
-	/*FOREIGN KEY(creatorID, creationDate) REFERENCES post 
-			ON UPDATE CASCADE
-			ON DELETE CASCADE*/
 	FOREIGN KEY(postID) REFERENCES post
 			ON UPDATE CASCADE
 			ON DELETE CASCADE
 	);
 	
 CREATE TABLE likes_Comment(
-	personID integer,
-	commentID integer,
-	/*creationDate timestamp,
-	creatorID integer,*/
-	PRIMARY KEY(personID, /*creationDate, creatorID*/ commentID),
+	personID bigint,
+	commentID bigint,
+	PRIMARY KEY(personID, commentID),
 	FOREIGN KEY(personID) REFERENCES person,
-	/*FOREIGN KEY(creatorID, creationDate) REFERENCES comment */
 	FOREIGN KEY(commentID) REFERENCES comment
 	);
 	
 CREATE TABLE has_Member(
-	personID integer,
-	forumID integer,
+	personID bigint,
+	forumID bigint,
 	joinDate timestamp NOT NULL,
 	PRIMARY KEY(personID, forumID),
 	FOREIGN KEY(personID) REFERENCES person
@@ -227,18 +216,18 @@ CREATE TABLE has_Type(
 	);	
 	
 CREATE TABLE forum_Has_Tag(
-	tag integer,
-	forumID integer,
-	PRIMARY KEY(forumID, tag),
+	tagID integer,
+	forumID bigint,
+	PRIMARY KEY(forumID, tagID),
 	FOREIGN KEY(forumID) REFERENCES forum
 			ON UPDATE CASCADE
 			ON DELETE CASCADE,
-	FOREIGN KEY(tag) REFERENCES tag		
+	FOREIGN KEY(tagID) REFERENCES tag		
 	);
 	
 CREATE TABLE comment_Has_Tag(
 	tagID integer,
-	commentID integer,
+	commentID bigint,
 	PRIMARY KEY(tagID, commentID),
 	FOREIGN KEY(commentID) REFERENCES comment
 			ON UPDATE CASCADE
@@ -248,12 +237,34 @@ CREATE TABLE comment_Has_Tag(
 	
 CREATE TABLE post_Has_Tag(
 	tagID integer,
-	postID integer,
-	PRIMARY KEY(tagID),
+	postID bigint,
+	PRIMARY KEY(tagID, postID),
 	FOREIGN KEY(postID) REFERENCES post
 			ON UPDATE CASCADE
 			ON DELETE CASCADE,
 	FOREIGN KEY(tagID) REFERENCES tag	
 	);	
 	
-/* Person knows Person AND TagClass is subclass of TagClass AND Forum has Moderator*/
+	
+CREATE TABLE person_Knows_Person(
+	personOne bigint,
+	personTwo bigint,
+	creationDate timestamp,
+	PRIMARY KEY(personOne, personTwo),
+	FOREIGN KEY(personOne) REFERENCES person
+			ON UPDATE CASCADE
+			ON DELETE CASCADE,
+	FOREIGN KEY(personTwo) REFERENCES person
+			ON UPDATE CASCADE
+			ON DELETE CASCADE
+	);
+	
+CREATE TABLE is_Sub_Class(
+	tagClassID1 integer,
+	tagClassID2 integer,
+	PRIMARY KEY(tagClassID1, tagClassID2),
+	FOREIGN KEY(tagClassID1) REFERENCES tag_Class
+			ON UPDATE CASCADE
+			ON DELETE CASCADE,
+	FOREIGN KEY(tagClassID2) REFERENCES tag_Class
+);
