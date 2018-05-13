@@ -29,7 +29,7 @@ CREATE TABLE university(
 	);
 	
 CREATE TABLE person(
-	personID integer,
+	personID bigint,
 	creationDate timestamp NOT NULL,
 	firstName varchar(64) NOT NULL,
 	lastName varchar(64) NOT NULL,
