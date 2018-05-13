@@ -1,0 +1,11 @@
+-finalisieren vom SQL-DDL-Skript
+	3 Relation fehlen:
+		Person_knows_Person
+		TagClass_is_Subclass_of_TagClass
+		Forum_has_Moderator
+
+-Beenden des Copy Skripts - mache Ich morgen
+
+-Updaten des Relationenmodells
+
+-Anmelden für Testat, am Besten sobald wie möglich
