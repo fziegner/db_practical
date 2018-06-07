@@ -118,9 +118,9 @@ WHERE personTwo IN (SELECT personID
 
 -- Query 7
 SELECT DISTINCT firstName, lastName
-FROM person JOIN has_member ON person.personid = has_member.personID
+FROM person JOIN has_member ON person.personID = has_member.personID
 WHERE forumID IN (SELECT forumID
-				  FROM person JOIN has_member ON person.personid = has_member.personID
+				  FROM person JOIN has_member ON person.personID = has_member.personID
 				  WHERE firstName = 'Mehmet' AND lastName = 'Koksal')
 			  AND firstName <> 'Mehmet' AND lastName <> 'Koksal'
 			  
@@ -142,16 +142,43 @@ WHERE forumID IN (SELECT forumID
 */
 
 -- Query 8
-SELECT continentname, ROUND((COUNT(*)*100.0) / (SELECT COUNT(*) FROM person), 3) AS Anteil
-FROM person JOIN city ON person.city = city.cityid
-			JOIN country ON city.country = country.countryid
-			JOIN continent ON country.continent = continent.continentid
-GROUP BY continentname
-/*Ergebnis
+SELECT continentName, ROUND((COUNT(*) * 100.0) / (SELECT COUNT(*) FROM person), 3) AS anteil
+FROM person JOIN city ON person.city = city.cityID
+			JOIN country ON city.country = country.countryID
+			JOIN continent ON country.continent = continent.continentID
+GROUP BY continentName
+
+/*Ergebnis:
 "North_America"	"9.091"
 "South_America"	"4.545"
 "Africa"	"11.364"
 "Asia"	"50.000"
 "Europe"	"25.000"
---Anzahl Tupel: 5
+-- Anzahl Tupel: 5
 */
+
+-- Query 9
+SELECT tagClassName, COUNT(*)
+FROM tag_class JOIN has_type ON tag_class.tagClassID = has_type.tagClass
+			   JOIN tag ON has_type.tag = tag.tagID
+			   JOIN post_has_tag ON tag.tagID = post_has_tag.tagID
+			   JOIN post ON post_has_tag.postID = post.postID
+GROUP BY tagClassName
+ORDER BY 2 DESC
+LIMIT 10
+
+/*Ergebnis:
+"Person"	"110"
+"MusicalArtist"	"99"
+"OfficeHolder"	"76"
+"Writer"	"66"
+"TennisPlayer"	"63"
+"BritishRoyalty"	"57"
+"Saint"	"33"
+"Single"	"30"
+"Philosopher"	"28"
+"Album"	"27"
+-- Anzahl Tupel: 10
+*/
+
+-- Query 10
