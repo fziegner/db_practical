@@ -5,6 +5,14 @@ FROM city JOIN country ON city.country = country.countryid
    JOIN University ON city.cityid = city
 WHERE continent.continentname = 'Africa'
 
+SELECT count(distinct city.cityid)
+FROM city NATURAL JOIN country 
+   NATURAL JOIN continent 
+   NATURAL JOIN University
+WHERE continent.continentname = 'Africa' 
+   AND city.country = country.countryid 
+   AND country.continent = continent.continentid 
+   AND city.cityid = city;
 --Ergebnis: 100 Datensätze
 
 -- Query 2
