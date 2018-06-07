@@ -67,17 +67,78 @@ ORDER BY 2 DESC
 -- Query 5
 SELECT DISTINCT firstName, lastName
 FROM person JOIN pkp_symmetric pkp ON person.personID = pkp.personOne OR person.personID = pkp.personTwo
-WHERE personOne = (SELECT personID FROM person WHERE firstName = 'Hans' AND lastName = 'Johansson')
-   OR personTwo = (SELECT personID FROM person WHERE firstName = 'Hans' AND lastName = 'Johansson')
+WHERE (personOne = (SELECT personID FROM person WHERE firstName = 'Hans' AND lastName = 'Johansson')
+   OR personTwo = (SELECT personID FROM person WHERE firstName = 'Hans' AND lastName = 'Johansson'))
+   AND firstName <> 'Hans' AND lastName <> 'Johansson'
+   
+SELECT personID
+FROM person JOIN pkp_symmetric pkp ON person.personID = pkp.personOne
+WHERE (personTwo = (SELECT personID FROM person WHERE firstName = 'Hans' AND lastName = 'Johansson'))
+   AND firstName <> 'Hans' AND lastName <> 'Johansson'
    
 /*Ergebnis:
 "Jorge"	"Araujo Castro"
 "Bryn"	"Davies"
 "Alim"	"Guliyev"
 ...
+"Paul"	"Becker"
 "Ali"	"Achiou"
-"Hans"	"Johansson"
 "Otto"	"Richter"
--- Anzahl Tupel: 13
+-- Anzahl Tupel: 12
+*/
 
-	
+-- Query 6
+SELECT DISTINCT firstName, lastName
+FROM person JOIN pkp_symmetric pkp ON person.personID = pkp.personOne
+WHERE personTwo IN (SELECT personID
+				   FROM person JOIN pkp_symmetric pkp ON person.personID = pkp.personOne
+				   WHERE (personTwo = (SELECT personID FROM person WHERE firstName = 'Hans' AND lastName = 'Johansson'))
+				   AND firstName <> 'Hans' AND lastName <> 'Johansson')
+				AND personOne NOT IN(SELECT personID
+							FROM person JOIN pkp_symmetric pkp ON person.personID = pkp.personOne
+							WHERE (personTwo = (SELECT personID FROM person WHERE firstName = 'Hans' AND lastName = 'Johansson'))
+							AND firstName <> 'Hans' AND lastName <> 'Johansson')
+							
+/*Ergebnis:
+"Yahya Ould Ahmed El"	"Abdallahi"
+"Ali"	"Abouba"
+"Evangelos"	"Alkaios"
+"Oleg"	"Bazayev"
+"Pablo"	"Bernal"
+"Adrian"	"Bravo"
+...
+"Chen"	"Yang"
+"Jie"	"Yang"
+"Djelaludin"	"Zaland"
+"Lei"	"Zhang"
+"Li"	"Zhang"
+"Lin"	"Zhang"
+-- Anzahl Tupel: 48
+*/
+
+-- Query 7
+SELECT DISTINCT firstName, lastName
+FROM person JOIN has_member ON person.personid = has_member.personID
+WHERE forumID IN (SELECT forumID
+				  FROM person JOIN has_member ON person.personid = has_member.personID
+				  WHERE firstName = 'Mehmet' AND lastName = 'Koksal')
+			  AND firstName <> 'Mehmet' AND lastName <> 'Koksal'
+			  
+/*Ergebnis:
+"Zhi"	"Zhang"
+"Jorge"	"Araujo Castro"
+"Cheng"	"Chen"
+"Baby"	"Yang"
+"Bryn"	"Davies"
+"John"	"Johnson"
+...
+"Celso"	"Oliveira"
+"Chen"	"Li"
+"Miguel"	"Gonzalez"
+"Albaye Papa"	"Diouf"
+"Chen"	"Zhu"
+"Peng"	"Yang"
+-- Anzahl Tupel: 49
+*/
+
+-- Query 8
