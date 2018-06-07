@@ -142,3 +142,16 @@ WHERE forumID IN (SELECT forumID
 */
 
 -- Query 8
+SELECT continentname, ROUND((COUNT(*)*100.0) / (SELECT COUNT(*) FROM person), 3) AS Anteil
+FROM person JOIN city ON person.city = city.cityid
+			JOIN country ON city.country = country.countryid
+			JOIN continent ON country.continent = continent.continentid
+GROUP BY continentname
+/*Ergebnis
+"North_America"	"9.091"
+"South_America"	"4.545"
+"Africa"	"11.364"
+"Asia"	"50.000"
+"Europe"	"25.000"
+--Anzahl Tupel: 5
+*/
