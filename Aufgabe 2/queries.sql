@@ -206,7 +206,32 @@ ORDER BY lastName;
 "Cheng"	"Wei"
 "Jie"	"Yang"
 "Jan"	"Zakrzewski"
---Anzahl Tuper: 16
+--Anzahl Tupel: 16
+*/
+
+--Query 11
+SELECT forumtitle
+FROM forum JOIN post ON forumid = containerforum
+GROUP BY forumid
+HAVING count(*) > (SELECT count(*) FROM post)/(SELECT count(*) FROM forum)
+ORDER BY forumtitle;
+
+/*Ergebnis
+"Album 0 of Abdul Haris Tobing"
+"Album 0 of Alejandro Rodriguez"
+"Album 0 of Ali Abouba"
+"Album 0 of Amy Chen"
+"Album 0 of Celso Oliveira"
+"Album 0 of Djelaludin Zaland"
+"Album 0 of Eric Mettacara"
+...
+"Album 9 of Wei Wei"
+"Album 9 of Yang Li"
+"Group for Muhammad_Ali_of_Egypt in Hefei"
+"Wall of Alim Guliyev"
+"Wall of Karl Fischer"
+"Wall of Ken Yamada"
+--Anzahl Tupel: 359
 */
 
 
