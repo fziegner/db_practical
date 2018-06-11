@@ -182,3 +182,32 @@ LIMIT 10
 */
 
 -- Query 10
+SELECT DISTINCT firstName, lastName
+FROM person person JOIN comment c ON person.personid = c.creatorid
+			  JOIN post p1 ON person.personid = p1.creatorid
+WHERE c.creatorid NOT IN (SELECT creatorid FROM comment com JOIN likes_Comment lc ON com.commentid = lc.commentid)
+	  AND p1.creatorid NOT IN (SELECT creatorid FROM post p2 JOIN likes_Post lp ON p2.postid = lp.postid)
+ORDER BY lastName;
+
+/*Ergebnis:
+"Pablo"	"Bernal"
+"Bryn"	"Davies"
+"Abdoulaye Khouma"	"Dia"
+"Aleksandr"	"Dobrunov"
+"Alexei"	"Feltsman"
+"John"	"Johnson"
+"Mehmet"	"Koksal"
+"Cam"	"Loan"
+"Neil"	"Murray"
+"Jose"	"Pereira"
+"Marc"	"Ravalomanana"
+"Otto"	"Redl"
+"Masahiro"	"Sato"
+"Cheng"	"Wei"
+"Jie"	"Yang"
+"Jan"	"Zakrzewski"
+--Anzahl Tuper: 16
+*/
+
+
+
