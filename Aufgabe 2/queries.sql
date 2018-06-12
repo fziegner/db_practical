@@ -234,5 +234,34 @@ ORDER BY forumtitle;
 --Anzahl Tupel: 359
 */
 
+-- Query 12
+SELECT firstName, lastName
+FROM person JOIN pkp_symmetric pkp ON person.personID = pkp.personOne
+WHERE personTwo = (SELECT person.personid
+				   FROM person JOIN likes_post plp ON person.personid = plp.personid
+							   JOIN post ON plp.personid = post.creatorid
+				   GROUP BY person.personid
+				   HAVING COUNT(plp.personid) = (SELECT COUNT(plp.personid)
+												 FROM person JOIN likes_post plp ON person.personid = plp.personid
+															 JOIN post ON plp.personid = post.creatorid
+												 GROUP BY person.personid
+												 ORDER BY 1 DESC
+												 LIMIT 1))
+ORDER BY 2
 
-
+/*Ergebnis:
+"Ali"	"Abouba"
+"Ali"	"Achiou"
+"Cheng"	"Chen"
+"Bryn"	"Davies"
+"Karl"	"Fischer"
+"Hossein"	"Forouhar"
+...
+"Wei"	"Wei"
+"Ken"	"Yamada"
+"Akira"	"Yamamoto"
+"Li"	"Zhang"
+"Lin"	"Zhang"
+"Lei"	"Zhang"
+-- Anzahl Tupel: 23
+*/
