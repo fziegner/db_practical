@@ -265,3 +265,32 @@ ORDER BY 2
 "Lei"	"Zhang"
 -- Anzahl Tupel: 23
 */
+
+-- Query 13
+WITH RECURSIVE tree(id, firstName, lastName, distance) AS (
+	SELECT personid, firstName, lastName, 0
+	FROM person
+	WHERE person.personid = 94
+	UNION
+	SELECT pkp.persontwo, person.firstName, person.lastName, tree.distance + 1
+	FROM person_knows_person pkp JOIN person ON pkp.persontwo = person.personid, tree
+	WHERE pkp.personone = tree.id
+)
+SELECT * from tree
+
+/*Ergebnis:
+"94"	"Jun"	"Hu"	0
+"2199023255625"	"Cheng"	"Chen"	1
+"96"	"Anson"	"Chen"	1
+"8796093022217"	"Alim"	"Guliyev"	1
+"10995116277851"	"Chong"	"Liu"	1
+"8796093022251"	"Chen"	"Li"	1
+...
+"12094627905543"	"Jun"	"Li"	7
+"15393162788888"	"Jie"	"Yang"	7
+"17592186044483"	"Francisco"	"Reyes"	7
+"16492674416738"	"Wei"	"Hu"	7
+"16492674416674"	"Roberto"	"Diaz"	7
+"16492674416674"	"Roberto"	"Diaz"	8
+-- Anzahl Tupel: 120
+*/
