@@ -294,3 +294,37 @@ SELECT * from tree
 "16492674416674"	"Roberto"	"Diaz"	8
 -- Anzahl Tupel: 120
 */
+
+-- Query 14
+WITH RECURSIVE tree(id, firstName, lastName, distance, treepath) AS (
+	SELECT personid, firstName, lastName, 0, CAST(firstName AS VARCHAR(1024)) AS treepath
+	FROM person
+	WHERE person.personid = 94
+	UNION
+	SELECT pkp.persontwo, person.firstName, person.lastName, tree.distance + 1, 
+	CAST (
+		CONCAT (
+			tree.treepath, CAST(' -> ' AS VARCHAR(1024)), CAST(person.firstName AS VARCHAR(1024))
+		) AS VARCHAR(1024)
+	) AS treepath
+	FROM person_knows_person pkp JOIN person ON pkp.persontwo = person.personid, tree
+	WHERE pkp.personone = tree.id
+)
+SELECT * from tree
+
+/*Ergebnis:
+"94"	"Jun"	"Hu"	0	"Jun"
+"2199023255625"	"Cheng"	"Chen"	1	"Jun -> Cheng"
+"96"	"Anson"	"Chen"	1	"Jun -> Anson"
+"8796093022217"	"Alim"	"Guliyev"	1	"Jun -> Alim"
+"10995116277851"	"Chong"	"Liu"	1	"Jun -> Chong"
+"8796093022251"	"Chen"	"Li"	1	"Jun -> Chen"
+...
+"16492674416674"	"Roberto"	"Diaz"	7	"Jun -> Anson -> Ali -> Cam -> Bryn -> Jie -> Celso -> Roberto"
+"16492674416674"	"Roberto"	"Diaz"	7	"Jun -> Anson -> Amy -> Cam -> Bryn -> Jie -> Celso -> Roberto"
+"16492674416674"	"Roberto"	"Diaz"	8	"Jun -> Anson -> Ali -> Alim -> Akira -> Bryn -> Abdoulaye Khouma -> Celso -> Roberto"
+"16492674416674"	"Roberto"	"Diaz"	8	"Jun -> Anson -> Ali -> Amy -> Cam -> Bryn -> Abdoulaye Khouma -> Celso -> Roberto"
+"16492674416674"	"Roberto"	"Diaz"	8	"Jun -> Anson -> Ali -> Alim -> Akira -> Bryn -> Jie -> Celso -> Roberto"
+"16492674416674"	"Roberto"	"Diaz"	8	"Jun -> Anson -> Ali -> Amy -> Cam -> Bryn -> Jie -> Celso -> Roberto"
+-- Anzahl Tupel: 553
+*/
