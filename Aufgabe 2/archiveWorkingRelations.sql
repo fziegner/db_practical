@@ -15,7 +15,7 @@ CREATE TABLE former_Worker (
 CREATE FUNCTION archive_WorkAt() RETURNS TRIGGER AS
 $BODY$
 BEGIN
-INSERT INTO former_Worker(personid, companyid, workfrom, deletion)
+INSERT INTO former_Worker(personid, companyid, workfrom, deletedOn)
 VALUES(OLD.personid, OLD.company, OLD.workfrom, NOW());
 RETURN OLD;
 END;
