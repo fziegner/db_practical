@@ -11,13 +11,15 @@ WHERE continent.continentname = 'Africa'
 */
 
 -- Query 2
-SELECT firstName, lastName, count(creatorID) AS posts
-FROM person JOIN post ON person.personID = post.creatorID
-WHERE person.birthday = (SELECT MIN(birthday) FROM person JOIN post ON person.personID = post.creatorID)
+SELECT firstName, lastName, count(post.creatorID) AS posts
+FROM person LEFT JOIN post ON person.personID = post.creatorID
+WHERE person.birthday = (SELECT MIN(birthday) FROM person)
 GROUP BY firstName, lastName
 
---Ergebnis: Masahiro Sato, 1 Post
---älteste Person: Joakim Larsson, 0 Posts
+/*Ergebnis:
+"Joakim"	"Larsson"	"0"
+-- Anzahl Tupel: 1
+*/
 
 --Query 3
 SELECT countryName, count(commentID) AS comments
@@ -60,25 +62,24 @@ ORDER BY 2 DESC
 */
 
 -- Query 5
-SELECT DISTINCT firstName, lastName
-FROM person JOIN pkp_symmetric pkp ON person.personID = pkp.personOne OR person.personID = pkp.personTwo
-WHERE (personOne = (SELECT personID FROM person WHERE firstName = 'Hans' AND lastName = 'Johansson')
-   OR personTwo = (SELECT personID FROM person WHERE firstName = 'Hans' AND lastName = 'Johansson'))
-   AND firstName <> 'Hans' AND lastName <> 'Johansson'
-   
-SELECT personID
+SELECT firstName, lastName
 FROM person JOIN pkp_symmetric pkp ON person.personID = pkp.personOne
 WHERE (personTwo = (SELECT personID FROM person WHERE firstName = 'Hans' AND lastName = 'Johansson'))
    AND firstName <> 'Hans' AND lastName <> 'Johansson'
    
 /*Ergebnis:
-"Jorge"	"Araujo Castro"
+"Wojciech"	"Ciesla"
 "Bryn"	"Davies"
+"Abdoulaye Khouma"	"Dia"
+"Eric"	"Mettacara"
 "Alim"	"Guliyev"
-...
+"Jorge"	"Araujo Castro"
+"Otto"	"Richter"
+"Karl"	"Fischer"
+"Hossein"	"Forouhar"
 "Paul"	"Becker"
 "Ali"	"Achiou"
-"Otto"	"Richter"
+"Jan"	"Zakrzewski"
 -- Anzahl Tupel: 12
 */
 
