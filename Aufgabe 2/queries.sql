@@ -5,15 +5,10 @@ FROM city JOIN country ON city.country = country.countryid
    JOIN University ON city.cityid = city
 WHERE continent.continentname = 'Africa'
 
-SELECT count(distinct city.cityid)
-FROM city NATURAL JOIN country 
-   NATURAL JOIN continent 
-   NATURAL JOIN University
-WHERE continent.continentname = 'Africa' 
-   AND city.country = country.countryid 
-   AND country.continent = continent.continentid 
-   AND city.cityid = city;
---Ergebnis: 100 Datensätze
+/*Ergebnis:
+"100"
+-- Anzahl Tupel: 1
+*/
 
 -- Query 2
 SELECT firstName, lastName, count(creatorID) AS posts
@@ -44,25 +39,25 @@ ORDER BY 2 ASC
 "Republic_of_Macedonia"	"32"
 "China"	"35"
 "United_Kingdom"	"93"
-*/
 -- Anzahl Tupel: 111
+*/
 
 -- Query 4
-SELECT cityName, count(personID) AS einwohner
+SELECT cityName, COUNT(personID) AS einwohner
 FROM city JOIN person ON city.cityID = person.city
 GROUP BY cityName
+HAVING COUNT(personID) = (SELECT COUNT(personID)
+						  FROM city JOIN person ON city.cityID = person.city
+						  GROUP BY cityName
+						  ORDER BY 1 DESC
+						  LIMIT 1)
 ORDER BY 2 DESC
 
 /*Ergebnis:
-"Ludwigsburg"	"2"
 "Rahim_Yar_Khan"	"2"
-"Toyohashi"	"1"
-"Baku"	"1"
-"Pudong"	"1"
-"Rovaniemi"	"1"
-...
+"Ludwigsburg"	"2"
+-- Anzahl Tupel: 2
 */
--- Anzahl Tupel: 86
 
 -- Query 5
 SELECT DISTINCT firstName, lastName
@@ -116,29 +111,22 @@ WHERE personTwo IN (SELECT personID
 -- Anzahl Tupel: 48
 */
 
--- Query 7
-SELECT DISTINCT firstName, lastName
+-- Query 7			  
+WITH fids AS (SELECT forumID
+			  FROM person JOIN has_member ON person.personID = has_member.personID
+			  WHERE firstName = 'Mehmet' AND lastName = 'Koksal')
+SELECT firstName, lastName
 FROM person JOIN has_member ON person.personID = has_member.personID
-WHERE forumID IN (SELECT forumID
-				  FROM person JOIN has_member ON person.personID = has_member.personID
-				  WHERE firstName = 'Mehmet' AND lastName = 'Koksal')
-			  AND firstName <> 'Mehmet' AND lastName <> 'Koksal'
+WHERE has_member.forumID IN (SELECT * FROM fids)
+GROUP BY person.personID
+HAVING COUNT(has_member.forumID) = (SELECT COUNT(*) FROM fids)
 			  
 /*Ergebnis:
-"Zhi"	"Zhang"
-"Jorge"	"Araujo Castro"
-"Cheng"	"Chen"
-"Baby"	"Yang"
-"Bryn"	"Davies"
-"John"	"Johnson"
-...
-"Celso"	"Oliveira"
-"Chen"	"Li"
 "Miguel"	"Gonzalez"
-"Albaye Papa"	"Diouf"
-"Chen"	"Zhu"
-"Peng"	"Yang"
--- Anzahl Tupel: 49
+"Chen"	"Yang"
+"Paul"	"Becker"
+"Mehmet"	"Koksal"
+-- Anzahl Tupel: 4
 */
 
 -- Query 8
@@ -213,7 +201,7 @@ ORDER BY lastName;
 SELECT forumtitle
 FROM forum JOIN post ON forumid = containerforum
 GROUP BY forumid
-HAVING count(*) > (SELECT count(*) FROM post)/(SELECT count(*) FROM forum)
+HAVING COUNT(*) > (SELECT COUNT(*) FROM post)/(SELECT COUNT(*) FROM forum)
 ORDER BY forumtitle;
 
 /*Ergebnis
@@ -267,32 +255,36 @@ ORDER BY 2
 */
 
 -- Query 13
-WITH RECURSIVE tree(id, firstName, lastName, distance) AS (
-	SELECT personid, firstName, lastName, 0
+WITH RECURSIVE tree(id, firstName, lastName, distance, max_recursion) AS (
+	SELECT personid, firstName, lastName, 0, 0
 	FROM person
 	WHERE person.personid = 94
 	UNION
-	SELECT pkp.persontwo, person.firstName, person.lastName, tree.distance + 1
-	FROM person_knows_person pkp JOIN person ON pkp.persontwo = person.personid, tree
-	WHERE pkp.personone = tree.id
+	SELECT pkp.persontwo, person.firstName, person.lastName, tree.distance + 1, max_recursion + 1
+	FROM pkp_symmetric pkp JOIN person ON pkp.persontwo = person.personid, tree
+	WHERE pkp.personone = tree.id AND max_recursion < 100
 )
-SELECT * from tree
+SELECT tree.id, tree.firstName, tree.lastName, MIN(tree.distance) AS distance
+FROM tree
+WHERE id <> 94
+GROUP BY tree.id, tree.firstName, tree.lastName
+ORDER BY distance ASC
 
 /*Ergebnis:
-"94"	"Jun"	"Hu"	0
+"8796093022251"	"Chen"	"Li"	1
 "2199023255625"	"Cheng"	"Chen"	1
 "96"	"Anson"	"Chen"	1
 "8796093022217"	"Alim"	"Guliyev"	1
+"3298534883365"	"Wei"	"Wei"	1
 "10995116277851"	"Chong"	"Liu"	1
-"8796093022251"	"Chen"	"Li"	1
 ...
-"12094627905543"	"Jun"	"Li"	7
-"15393162788888"	"Jie"	"Yang"	7
-"17592186044483"	"Francisco"	"Reyes"	7
-"16492674416738"	"Wei"	"Hu"	7
-"16492674416674"	"Roberto"	"Diaz"	7
-"16492674416674"	"Roberto"	"Diaz"	8
--- Anzahl Tupel: 120
+"6597069766675"	"Jimmy"	"Burak"	3
+"13194139533324"	"Jose"	"Alonso"	3
+"1099511627861"	"Hao"	"Li"	3
+"13194139533350"	"Alfonso"	"Rodriguez"	3
+"5497558138966"	"Alejandro"	"Rodriguez"	3
+"15393162788910"	"Alejandro"	"Garcia"	4
+-- Anzahl Tupel: 72
 */
 
 -- Query 14
