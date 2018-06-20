@@ -171,30 +171,29 @@ LIMIT 10
 
 -- Query 10
 SELECT DISTINCT firstName, lastName
-FROM person person JOIN comment c ON person.personid = c.creatorid
-			  JOIN post p1 ON person.personid = p1.creatorid
-WHERE c.creatorid NOT IN (SELECT creatorid FROM comment com JOIN likes_Comment lc ON com.commentid = lc.commentid)
-	  AND p1.creatorid NOT IN (SELECT creatorid FROM post p2 JOIN likes_Post lp ON p2.postid = lp.postid)
-ORDER BY lastName;
+FROM person
+WHERE personid NOT IN (SELECT creatorid FROM comment c JOIN likes_Comment lc ON c.commentid = lc.commentid
+					   UNION
+					   SELECT creatorid FROM post p JOIN likes_Post lp ON p.postid = lp.postid)
+			   AND personid NOT IN(SELECT personid FROM person WHERE personid NOT IN (SELECT creatorid FROM comment
+									UNION
+								   SELECT creatorid FROM post))
+ORDER BY lastName
 
 /*Ergebnis:
+"Ayesha"	"Ahmed"
+"Mirza Kalich"	"Ali"
 "Pablo"	"Bernal"
+"Luigi"	"Colombo"
 "Bryn"	"Davies"
-"Abdoulaye Khouma"	"Dia"
-"Aleksandr"	"Dobrunov"
-"Alexei"	"Feltsman"
-"John"	"Johnson"
-"Mehmet"	"Koksal"
-"Cam"	"Loan"
-"Neil"	"Murray"
-"Jose"	"Pereira"
-"Marc"	"Ravalomanana"
-"Otto"	"Redl"
-"Masahiro"	"Sato"
+...
+"Anatoly"	"Shevchenko"
 "Cheng"	"Wei"
 "Jie"	"Yang"
 "Jan"	"Zakrzewski"
---Anzahl Tupel: 16
+"Li"	"Zhang"
+"Zhi"	"Zhang"
+--Anzahl Tupel: 27
 */
 
 --Query 11
