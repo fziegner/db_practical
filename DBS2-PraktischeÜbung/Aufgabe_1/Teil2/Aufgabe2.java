@@ -5,7 +5,10 @@ import static java.lang.System.out;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
+
+import com.ibm.db2.jcc.am.SqlIntegrityConstraintViolationException;
 
 public class Aufgabe2 {
 
@@ -91,7 +94,6 @@ public class Aufgabe2 {
 					con.close();
 					out.println("**** Connection closed ****");
 				} catch (SQLException sqlEx) {
-					//catchInputException();
 					System.err.println(sqlEx);
 				}
 			}
@@ -145,23 +147,45 @@ public class Aufgabe2 {
 	private static void insertEmployee(Connection con, Scanner scanner)
 			throws SQLException {
 				
-		String name;
-		String address;
-		String zipcode;
-		String city;
+		String name = "";
+		String address = "";
+		int zipcode = 0;
+		String city = "";
 		
-		out.println("Name:");
-		name = scanner.next();
-		out.println("Address:");
-		address = scanner.next();
-		out.println("Zipcode:");
-		zipcode = scanner.next();
-		out.println("City:");
-		city = scanner.next();
+		while(name.toString().trim().isEmpty()) {
+			out.print("Name: ");
+			name = scanner.next();
+		}
+		while(address.toString().trim().isEmpty()) {
+			out.print("Address: ");
+			address = scanner.next();
+		}
+		boolean flag = false;
+		do {
+			Scanner scanner2 = new Scanner(System.in);
+			out.print("Zipcode: ");
+			try {
+				zipcode = scanner2.nextInt();
+				scanner2.close();
+				if(zipcode >= 0) {
+					flag = false;
+				} else {
+					out.println("Bitte positive Zahl eingeben.");
+					flag = true;
+				}
+			} catch (InputMismatchException ex) {
+				out.println("Eingabe muss Zahl sein.");
+				flag = true;
+			}
+		} while(flag == true);
+		while(city.toString().trim().isEmpty()) {
+			out.print("City: ");
+			city = scanner.next();
+		}
 		
 		DBManager.STMT_INSERT_EMPLOYEE.setString(1, name);
 		DBManager.STMT_INSERT_EMPLOYEE.setString(2, address);
-		DBManager.STMT_INSERT_EMPLOYEE.setString(3, zipcode);
+		DBManager.STMT_INSERT_EMPLOYEE.setInt(3, zipcode);
 		DBManager.STMT_INSERT_EMPLOYEE.setString(4, city);
 		
 		DBManager.executeUpdate(con, DBManager.STMT_INSERT_EMPLOYEE);
@@ -187,20 +211,57 @@ public class Aufgabe2 {
 	private static void insertEmployeeProject(Connection con, Scanner scanner)
 			throws SQLException {
 		
-		int empID;
-		int projID;
+		int empID = 0;
+		int projID = 0;
+		boolean flag = false;
 		
 		queryAllEmployees(con);
-		out.println("EmployeeID:");
-		empID = scanner.nextInt();
-		queryAllProjects(con);
-		out.println("ProjectID:");
-		projID = scanner.nextInt();
+		do {
+			Scanner scanner2 = new Scanner(System.in);
+			out.print("EmployeeID: ");
+			try {
+				empID = scanner2.nextInt();
+				if(empID >= 0) {
+					flag = false;
+				} else {
+					out.println("Bitte positive Zahl eingeben.");
+					flag = true;
+				}
+			} catch (InputMismatchException ex) {
+				out.println("Eingabe muss Zahl sein.");
+				flag = true;
+			}
+		} while(flag == true);
+		flag = false;
 		
+		queryAllProjects(con);
+		do {
+			Scanner scanner2 = new Scanner(System.in);
+			out.print("ProjectID: ");
+			try {
+				projID = scanner2.nextInt();
+				if(projID >= 0) {
+					flag = false;
+				} else {
+					out.println("Bitte positive Zahl eingeben.");
+					flag = true;
+				}
+			} catch (InputMismatchException ex) {
+				out.println("Eingabe muss Zahl sein.");
+				flag = true;
+			}
+		} while(flag == true);
+		
+		try {
 		DBManager.STMT_INSERT_EMPLOYEE_PROJECT.setInt(1, empID);
 		DBManager.STMT_INSERT_EMPLOYEE_PROJECT.setInt(2, projID);
 		
 		DBManager.executeUpdate(con, DBManager.STMT_INSERT_EMPLOYEE_PROJECT);
+		} catch (SQLException ex) {
+			if(ex instanceof SqlIntegrityConstraintViolationException) {
+				out.println("EmployeeID oder ProjectID existiert nicht");
+			}
+		}
 		
 	}
 
@@ -243,10 +304,5 @@ public class Aufgabe2 {
 					rs.getString(2), rs.getInt(3)));
 		}
 		rs.close();
-			
 	}
-	
-	/*private static void catchInputException() {
-		out.println("Fehlerhafte Eingabe! Falscher Datentyp oder Leeres Eingabefeld!");
-	}*/
 }
