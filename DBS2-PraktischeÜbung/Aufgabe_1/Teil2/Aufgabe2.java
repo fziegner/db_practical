@@ -12,6 +12,8 @@ import com.ibm.db2.jcc.am.SqlIntegrityConstraintViolationException;
 
 public class Aufgabe2 {
 
+	private static Scanner scanner2;
+
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
 		scanner.useDelimiter("\n");
@@ -162,11 +164,10 @@ public class Aufgabe2 {
 		}
 		boolean flag = false;
 		do {
-			Scanner scanner2 = new Scanner(System.in);
+			scanner2 = new Scanner(System.in);
 			out.print("Zipcode: ");
 			try {
 				zipcode = scanner2.nextInt();
-				scanner2.close();
 				if(zipcode >= 0) {
 					flag = false;
 				} else {
@@ -217,7 +218,7 @@ public class Aufgabe2 {
 		
 		queryAllEmployees(con);
 		do {
-			Scanner scanner2 = new Scanner(System.in);
+			scanner2 = new Scanner(System.in);
 			out.print("EmployeeID: ");
 			try {
 				empID = scanner2.nextInt();
@@ -236,7 +237,7 @@ public class Aufgabe2 {
 		
 		queryAllProjects(con);
 		do {
-			Scanner scanner2 = new Scanner(System.in);
+			scanner2 = new Scanner(System.in);
 			out.print("ProjectID: ");
 			try {
 				projID = scanner2.nextInt();
