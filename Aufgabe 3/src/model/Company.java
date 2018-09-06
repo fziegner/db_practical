@@ -1,19 +1,18 @@
 package model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 public class Company extends Organization {
 
+	@Id
+	private int companyid;
+	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "country", nullable = false)
 	private Country country;
 	
-	public Company() {
-		
+	public Company() {		
 	}
 	
 	public Company(int id, String name, Country country) {

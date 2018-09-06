@@ -18,13 +18,17 @@ public class Country extends Place {
     @OneToMany(mappedBy = "country")
     private List<City> cities;
     
+    @OneToMany(mappedBy = "country")
+    private List<Company> companies;
+    
     public Country() {	
     }
 
-	public Country(int countryid, Continent continent, List<City> cities) {
+	public Country(int countryid, Continent continent, List<City> cities, List<Company> companies) {
 		this.countryid = countryid;
 		this.continent = continent;
 		this.cities = cities;
+		this.companies = companies;
 	}
 
 	public int getCountryid() {
@@ -49,5 +53,13 @@ public class Country extends Place {
 
 	public void setCities(List<City> cities) {
 		this.cities = cities;
+	}
+
+	public List<Company> getCompanies() {
+		return companies;
+	}
+
+	public void setCompanies(List<Company> companies) {
+		this.companies = companies;
 	}
 }

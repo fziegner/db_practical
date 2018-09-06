@@ -19,6 +19,9 @@ public class City extends Place {
 	@JoinColumn(name = "country")
 	private Country country;
 	
+	@OneToMany(mappedBy = "city")
+	private List<University> universities;
+	
 	public City() {
 	}
 
