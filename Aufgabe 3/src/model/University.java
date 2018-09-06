@@ -1,7 +1,15 @@
 package model;
 
-import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+@Entity
 public class University extends Organization {
 
 	@Id
@@ -10,13 +18,17 @@ public class University extends Organization {
 	@ManyToOne
 	@JoinColumn(name = "city")
 	private City city;
+	
+	@OneToMany(mappedBy="university")
+	private List<studyAt> studyat = new ArrayList<studyAt>();
 
 	public University() {
 	}
 
-	public University(int universityid, City city) {
+	public University(int universityid, City city, List<studyAt> studyat) {
 		this.universityid = universityid;
 		this.city = city;
+		this.studyat = studyat;
 	}
 
 	public int getUniversityid() {
@@ -33,5 +45,13 @@ public class University extends Organization {
 
 	public void setCity(City city) {
 		this.city = city;
+	}
+
+	public List<studyAt> getStudyat() {
+		return studyat;
+	}
+
+	public void setStudyat(List<studyAt> studyat) {
+		this.studyat = studyat;
 	}
 }

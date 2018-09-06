@@ -1,12 +1,15 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -43,21 +46,37 @@ public class Person {
 	@JoinColumn(name = "city", nullable = false)
 	private City city;
 	
-	public Person() {
-		
-	}
+	@OneToMany(mappedBy="person")
+	private List<studyAt> studyat = new ArrayList<studyAt>();
 	
-	public Person(Long personID, Calendar creationDate, String firstName, String lastName, String locationIP, City city) {
+	@OneToMany(mappedBy="person")
+	private List<workAt> workat = new ArrayList<workAt>();
+	
+	public Person() {
+	}
+
+	public Person(Long personID, Calendar creationDate, String firstName, String lastName, String gender,
+			Calendar birthday, String browserUsed, String locationIP, City city, List<studyAt> studyat,
+			List<workAt> workat) {
 		this.personID = personID;
 		this.creationDate = creationDate;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.gender = gender;
+		this.birthday = birthday;
+		this.browserUsed = browserUsed;
 		this.locationIP = locationIP;
 		this.city = city;
+		this.studyat = studyat;
+		this.workat = workat;
 	}
 
 	public Long getPersonID() {
 		return personID;
+	}
+
+	public void setPersonID(Long personID) {
+		this.personID = personID;
 	}
 
 	public Calendar getCreationDate() {
@@ -122,5 +141,21 @@ public class Person {
 
 	public void setCity(City city) {
 		this.city = city;
+	}
+
+	public List<studyAt> getStudyat() {
+		return studyat;
+	}
+
+	public void setStudyat(List<studyAt> studyat) {
+		this.studyat = studyat;
+	}
+
+	public List<workAt> getWorkat() {
+		return workat;
+	}
+
+	public void setWorkat(List<workAt> workat) {
+		this.workat = workat;
 	}
 }
