@@ -1,5 +1,5 @@
 package api;
 
-public class PersonRelatedImpl {
+public class PersonRelatedImpl implements PersonRelatedAPI {
 
 }

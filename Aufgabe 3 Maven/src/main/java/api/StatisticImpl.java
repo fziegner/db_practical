@@ -1,5 +1,5 @@
 package api;
 
-public class StatisticImpl {
+public class StatisticImpl implements StatisticAPI {
 
 }
