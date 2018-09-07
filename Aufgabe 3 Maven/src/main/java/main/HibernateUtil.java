@@ -5,9 +5,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import model.Continent;
+import model.Country;
 
-public class Hibernate {
+public class HibernateUtil {
 	
 	private static SessionFactory sessionFactory;
 	
@@ -27,15 +27,19 @@ public class Hibernate {
     }
 	
 	protected void read() {
-	    Session session = sessionFactory.openSession();
-	 
-	    int continentid = 1460;
-	    Continent continent = session.get(Continent.class, continentid);
-	 
-	    System.out.println("cityId: " + continent.getContinentid());
-	    System.out.println("Name: " + continent.getName());
-	 
-	    session.close();
+		Session session = sessionFactory.openSession();
+		int id = 1;
+		try {
+		    Country country = session.get(Country.class, id);
+		 
+		    System.out.println("Id: " + country.getId());
+		    System.out.println("Name: " + country.getName());
+		    System.out.println("Cities: " + country.getCities());
+		} catch (NullPointerException ex) {
+			System.out.println("ID doesn't exist");
+		} finally {
+			session.close();
+		}
 	}
 	
 	public static SessionFactory getSessionFactory() {

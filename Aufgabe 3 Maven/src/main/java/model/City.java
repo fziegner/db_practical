@@ -7,8 +7,6 @@ import javax.persistence.*;
 @Entity
 public class City extends Place {
 	
-	private int cityid;
-
 //	@OneToMany(mappedBy = "city")
 	//private List<Person> persons;
 	
@@ -22,18 +20,9 @@ public class City extends Place {
 	public City() {
 	}
 
-	public City(int cityid, List<Person> persons, Country country) {
-		this.cityid = cityid;
+	public City(List<Person> persons, Country country) {
 		//this.persons = persons;
 		this.country = country;
-	}
-
-	public int getCityid() {
-		return cityid;
-	}
-
-	public void setCityid(int cityid) {
-		this.cityid = cityid;
 	}
 
 	//public List<Person> getPersons() {

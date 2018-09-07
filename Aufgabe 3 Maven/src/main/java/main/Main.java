@@ -6,7 +6,7 @@ public class Main {
 		
 		System.out.println("Hallo");
 		
-		Hibernate hibernate = new Hibernate();
+		HibernateUtil hibernate = new HibernateUtil();
 		
 		hibernate.setup();
 		hibernate.read();
