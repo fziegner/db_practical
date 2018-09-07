@@ -1,13 +1,8 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 @Entity
 public class Country extends Place {
@@ -17,10 +12,10 @@ public class Country extends Place {
     private Continent continent;
     
     @OneToMany(mappedBy = "country")
-    private List<City> cities = new ArrayList<>();
+    private List<City> cities;
     
-//    @OneToMany(mappedBy = "country")
-    //private List<Company> companies;
+    @OneToMany(mappedBy = "country")
+    private List<Company> companies;
     
     public Country() {	
     }
@@ -28,7 +23,7 @@ public class Country extends Place {
 	public Country(Continent continent, List<City> cities, List<Company> companies) {
 		this.continent = continent;
 		this.cities = cities;
-		//this.companies = companies;
+		this.companies = companies;
 	}
 
 	public Continent getContinent() {
@@ -47,11 +42,11 @@ public class Country extends Place {
 		this.cities = cities;
 	}
 
-	//public List<Company> getCompanies() {
-		//return companies;
-	//}
+	public List<Company> getCompanies() {
+		return companies;
+	}
 
-	//public void setCompanies(List<Company> companies) {
-		//this.companies = companies;
-	//}
+	public void setCompanies(List<Company> companies) {
+		this.companies = companies;
+	}
 }

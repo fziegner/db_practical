@@ -5,6 +5,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import model.City;
+import model.Continent;
 import model.Country;
 
 public class HibernateUtil {
@@ -28,13 +30,30 @@ public class HibernateUtil {
 	
 	protected void read() {
 		Session session = sessionFactory.openSession();
-		int id = 1;
+		
+		int continentid = 1460;
+		int countryid = 1;
+		int cityid = 959;
+		
 		try {
-		    Country country = session.get(Country.class, id);
+			Continent continent = session.get(Continent.class, continentid);
+		    Country country = session.get(Country.class, countryid);
+		    City city = session.get(City.class, cityid);
 		 
+		    System.out.println("Id: " + continent.getId());
+		    System.out.println("Name: " + continent.getName());
+		    System.out.println("Countries: " + continent.getCountries());
+		    System.out.println("--------------------------------------------------------");
 		    System.out.println("Id: " + country.getId());
 		    System.out.println("Name: " + country.getName());
+		    System.out.println("Continent: " + country.getContinent());
 		    System.out.println("Cities: " + country.getCities());
+		    System.out.println("Companies: " + country.getCompanies());
+		    System.out.println("--------------------------------------------------------");
+		    System.out.println("Id: " + city.getId());
+		    System.out.println("Name: " + city.getName());
+		    System.out.println("Country: " + city.getCountry());
+		    System.out.println("Universities: " + city.getUniversities());
 		} catch (NullPointerException ex) {
 			System.out.println("ID doesn't exist");
 		} finally {
