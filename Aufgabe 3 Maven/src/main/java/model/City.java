@@ -7,8 +7,8 @@ import javax.persistence.*;
 @Entity
 public class City extends Place {
 	
-	//@OneToMany(mappedBy = "city")
-	//private List<Person> persons;
+	@OneToMany(mappedBy = "city")
+	private List<Person> persons;
 	
 	@ManyToOne
 	@JoinColumn(name = "country")
@@ -21,18 +21,18 @@ public class City extends Place {
 	}
 
 	public City(List<Person> persons, Country country, List<University> universities) {
-		//this.persons = persons;
+		this.persons = persons;
 		this.country = country;
 		this.universities = universities;
 	}
 
-	//public List<Person> getPersons() {
-		//return persons;
-	//}
+	public List<Person> getPersons() {
+		return persons;
+	}
 
-	//public void setPersons(List<Person> persons) {
-		//this.persons = persons;
-	//}
+	public void setPersons(List<Person> persons) {
+		this.persons = persons;
+	}
 
 	public Country getCountry() {
 		return country;

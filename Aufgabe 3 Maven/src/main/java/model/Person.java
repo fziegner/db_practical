@@ -1,15 +1,11 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.Date;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -17,47 +13,32 @@ import javax.persistence.TemporalType;
 public class Person {
 
 	@Id
-	@Column(name = "personID")
-	private Long personID;
-	
-	@Column(nullable = false)
+	private long personID;
 	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar creationDate;
-	
-	@Column(nullable = false, length = 64)
-	String firstName;
-	
-	@Column(nullable = false, length = 64)
-	String lastName;
-	
-	@Column(length = 8)
-	String gender;
-	
-	@Column(columnDefinition = "birthday")
-	private Calendar birthday;
-	
-	@Column(length = 64)
-	String browserUsed;
-	
-	@Column(nullable = false, columnDefinition = "inet")
+	private Date creationDate;
+	private String firstName;
+	private String lastName;
+	private String gender;
+	@Temporal(TemporalType.DATE)
+	private Date birthday;
+	private String browserUsed;
 	private String locationIP;
-	
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "city", nullable = false)
+
+	@ManyToOne
+	@JoinColumn(name = "city")
 	private City city;
 	
-	@OneToMany(mappedBy="person")
-	private List<studyAt> studyat = new ArrayList<studyAt>();
-	
-	@OneToMany(mappedBy="person")
-	private List<workAt> workat = new ArrayList<workAt>();
-	
+	//@OneToMany(mappedBy="person")
+	//private List<studyAt> studyat = new ArrayList<studyAt>();
+			
+	//@OneToMany(mappedBy="person")
+	//private List<workAt> workat = new ArrayList<workAt>();
+
 	public Person() {
 	}
-
-	public Person(Long personID, Calendar creationDate, String firstName, String lastName, String gender,
-			Calendar birthday, String browserUsed, String locationIP, City city, List<studyAt> studyat,
-			List<workAt> workat) {
+	
+	public Person(long personID, Date creationDate, String firstName, String lastName, String gender,
+			Date birthday, String browserUsed, String locationIP, City city) {
 		this.personID = personID;
 		this.creationDate = creationDate;
 		this.firstName = firstName;
@@ -67,23 +48,21 @@ public class Person {
 		this.browserUsed = browserUsed;
 		this.locationIP = locationIP;
 		this.city = city;
-		this.studyat = studyat;
-		this.workat = workat;
 	}
 
-	public Long getPersonID() {
+	public long getPersonID() {
 		return personID;
 	}
 
-	public void setPersonID(Long personID) {
+	public void setPersonID(long personID) {
 		this.personID = personID;
 	}
 
-	public Calendar getCreationDate() {
+	public Date getCreationDate() {
 		return creationDate;
 	}
 
-	public void setCreationDate(Calendar creationDate) {
+	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
 	}
 
@@ -111,11 +90,11 @@ public class Person {
 		this.gender = gender;
 	}
 
-	public Calendar getBirthday() {
+	public Date getBirthday() {
 		return birthday;
 	}
 
-	public void setBirthday(Calendar birthday) {
+	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
 	}
 
@@ -142,20 +121,20 @@ public class Person {
 	public void setCity(City city) {
 		this.city = city;
 	}
+	
+	//public List<studyAt> getStudyat() {
+		//return studyat;
+	//}
 
-	public List<studyAt> getStudyat() {
-		return studyat;
-	}
+	//public void setStudyat(List<studyAt> studyat) {
+		//this.studyat = studyat;
+	//}
 
-	public void setStudyat(List<studyAt> studyat) {
-		this.studyat = studyat;
-	}
+	//public List<workAt> getWorkat() {
+		//return workat;
+	//}
 
-	public List<workAt> getWorkat() {
-		return workat;
-	}
-
-	public void setWorkat(List<workAt> workat) {
-		this.workat = workat;
-	}
+	//public void setWorkat(List<workAt> workat) {
+		//this.workat = workat;
+	//}
 }

@@ -16,10 +16,10 @@
         <mapping class="model.Continent"/>
         <mapping class="model.Country"/>
         <mapping class="model.Organization"/>
+        <mapping class="model.Person"/>
         <mapping class="model.Place"/>
         <mapping class="model.University"/>
         <!--
-        <mapping class="model.Person"/>
         <mapping class="model.studyAt"/>
         <mapping class="model.workAt"/>
         -->
