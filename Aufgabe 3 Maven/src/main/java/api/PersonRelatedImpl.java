@@ -1,7 +1,6 @@
 package api;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 import model.Person;
 
@@ -11,9 +10,8 @@ public class PersonRelatedImpl implements PersonRelatedAPI {
 	}
 
 	@Override
-	public void getProfile(long personID, SessionFactory sessionFactory) {
+	public void getProfile(long personID, Session session) {
 		try {
-			Session session = sessionFactory.openSession();
 			Person person = session.get(Person.class, personID);
 			System.out.println("Name: " + person.getFirstName() + " " + person.getLastName());
 			System.out.println("Gender: " + person.getGender());
