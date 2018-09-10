@@ -28,6 +28,15 @@ public class PersonRelatedImpl implements PersonRelatedAPI {
 	}
 	
 	@Override
+	public void getCommonInterestOfMyFriends(long personID, Session session) {
+		try {
+			
+		} catch (Exception ex) {
+			System.out.println("ID doesn't exist");
+		}
+	}
+	
+	@Override
 	public void getCommonFriends(long personID1, long personID2, Session session) {
 		try {
 			Person person1 = session.get(Person.class, personID1);
@@ -41,5 +50,11 @@ public class PersonRelatedImpl implements PersonRelatedAPI {
 		} catch (Exception ex) {
 			System.out.println("ID doesn't exist");
 		}
+	}
+	
+	@Override
+	public Person getPerson(long personID, Session session) {
+		Person person = session.get(Person.class, personID);
+		return person;
 	}
 }

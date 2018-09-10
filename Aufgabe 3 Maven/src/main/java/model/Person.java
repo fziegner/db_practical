@@ -44,7 +44,7 @@ public class Person {
 	
 
 	@ElementCollection
-	@CollectionTable(name = "person_Knows_Person", joinColumns = @JoinColumn(name = "personOne"))
+	@CollectionTable(name = "pkp_symmetric", joinColumns = @JoinColumn(name = "personOne"))
 	@Column(name = "creationDate", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@MapKeyJoinColumn(name = "personTwo")
