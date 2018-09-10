@@ -17,10 +17,12 @@ public class Main {
 		
 		hibernate.setup();
 		Session session = hibernate.getSessionFactory().openSession();
-		//long profileID = 96;
-		//api.getProfile(profileID, hibernate.getSessionFactory());
-		api2.getTagClassHierarchy(session);
+		long profileID = 96;
+		long profile2 = 8796093022251L;
+		//api.getProfile(8796093022251L, session);
+		//api2.getTagClassHierarchy(session);
 		//hibernate.read();
+		api.getCommonFriends(profileID, profile2, session);;
 		session.close();
 		hibernate.exit();
 	}

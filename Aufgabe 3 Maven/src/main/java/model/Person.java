@@ -1,11 +1,19 @@
 package model;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -33,6 +41,14 @@ public class Person {
 			
 	//@OneToMany(mappedBy="person")
 	//private List<workAt> workat = new ArrayList<workAt>();
+	
+
+	@ElementCollection
+	@CollectionTable(name = "person_Knows_Person", joinColumns = @JoinColumn(name = "personOne"))
+	@Column(name = "creationDate", nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	@MapKeyJoinColumn(name = "personTwo")
+	private Map<Person, Calendar> friends = new HashMap<Person, Calendar>();
 
 	public Person() {
 	}
@@ -137,4 +153,19 @@ public class Person {
 	//public void setWorkat(List<workAt> workat) {
 		//this.workat = workat;
 	//}
+	
+	public Map<Person, Calendar> getFriends() {
+		return friends;
+	}
+
+	public void setFriends(Map<Person, Calendar> friends) {
+		this.friends = friends;
+	}
+	
+	public void addFriend(Person friend) {
+		if(friends.containsKey(friend) != true) {
+			Calendar date = new GregorianCalendar();
+			friends.put(friend, date);
+		}
+	}
 }
