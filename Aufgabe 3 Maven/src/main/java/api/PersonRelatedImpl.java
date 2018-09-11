@@ -95,6 +95,7 @@ public class PersonRelatedImpl implements PersonRelatedAPI {
 					}
 				}
 			}
+			personInterestCount = 0;
 		}
 		for(Iterator<Person> itr = mostCommonInterests.values().iterator(); itr.hasNext();) {
 			//System.out.println(itr.next().getPersonID() + " - " + itr.next().getFirstName() + " " + itr.next().getLastName());
