@@ -8,6 +8,7 @@ import org.hibernate.query.Query;
 
 import model.Comments;
 import model.Country;
+import model.Person;
 import model.TagClass;
 
 public class StatisticImpl implements StatisticAPI {
@@ -58,7 +59,13 @@ public class StatisticImpl implements StatisticAPI {
 		List<Comments> commentsList = query.getResultList();
 		List<Comments> popularComments = new ArrayList<>();
 		for(Comments comment : commentsList) {
-			System.out.println(comment + " : " + comment.getLikes().size());
+			if(minimumLikes < comment.getLikes().size()) {
+				popularComments.add(comment);
+			}
+		}
+		for(Comments comment : popularComments) {
+			Person person = session.get(Person.class, comment.getCreatorID());
+			System.out.println(comment.getCommentID() + " by " + person.getFirstName() + " " + person.getLastName());
 		}
 	}
 }

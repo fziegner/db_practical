@@ -22,6 +22,7 @@
         <mapping class="model.University"/>
         <mapping class="model.Comments"/>
         <mapping class="model.Post"/>
+        <mapping class="model.Tag"/>
         <!--
         <mapping class="model.studyAt"/>
         <mapping class="model.workAt"/>

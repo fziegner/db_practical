@@ -32,7 +32,7 @@ public class Main {
 		//api2.getTagClassHierarchy(session);
 		//api2.getMostPostingCountry(session);
 		//hibernate.read();
-		api2.getPopularComments(session, 2);
+		api2.getPopularComments(session, 0);
 
 		session.close();
 		hibernate.exit();

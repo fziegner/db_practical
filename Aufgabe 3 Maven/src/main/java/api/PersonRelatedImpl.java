@@ -69,7 +69,7 @@ public class PersonRelatedImpl implements PersonRelatedAPI {
 			
 			/*for(int k = 0; k < recommend.size(); k++) {
 				if(recommend.get(k).)
-			}*/
+			}
 			
 		} catch (Exception ex) {
 			System.out.println("ID doesn't exist");
