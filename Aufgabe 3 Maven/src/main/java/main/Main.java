@@ -1,19 +1,9 @@
 package main;
 
-import java.util.List;
-
-import javax.persistence.TypedQuery;
-import javax.xml.stream.events.Comment;
-
 import org.hibernate.Session;
-import org.hibernate.query.Query;
 
 import api.PersonRelatedImpl;
 import api.StatisticImpl;
-import model.Comments;
-import model.Country;
-import model.Person;
-import model.Post;
 
 public class Main {
 	
@@ -29,6 +19,7 @@ public class Main {
 		Application app = new Application(priAPI, statAPI, hibernate, session);
 		app.startApplication();
 		
+		session.close();
 		hibernate.exit();
 		
 	}

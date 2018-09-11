@@ -2,20 +2,18 @@ package main;
 
 import java.util.Scanner;
 
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 
 import api.PersonRelatedImpl;
 import api.StatisticImpl;
 
 public class Application {
-
-	Scanner scanner = new Scanner(System.in);
 	
 	PersonRelatedImpl priAPI;
 	StatisticImpl statAPI;
 	HibernateUtil hibernate;
 	Session session;
+	boolean exit = false;
 
 	public Application(PersonRelatedImpl priAPI, StatisticImpl statAPI, HibernateUtil hibernate, Session session) {
 		this.priAPI = priAPI;
@@ -23,13 +21,40 @@ public class Application {
 		this.hibernate = hibernate;
 		this.session = session;
 	}
-
-	public void startApplication() {
+	
+	public int readSelection() {
+		Scanner scanner = new Scanner(System.in);
+		return Integer.parseInt(scanner.nextLine());
+	}
+	
+	public void performAction(int selection) {
+		switch(selection) {
+			case 0: exit = true; break;
+			case 1: priAPI.getProfile(readID(), session); break;
+			case 2: priAPI.getCommonInterestOfMyFriends(readID(), session); break;
+			case 3: 
+				System.out.println("ID 1");
+				long id1 = readID();
+				System.out.println("ID 2");
+				long id2 = readID();
+				priAPI.getCommonFriends(id1, id2, session); 
+				break;
+			case 4: priAPI.getPersonsWithMostCommonInterests(readID(), session); break;
+			case 5: priAPI.getJobRecommendations(readID(), session);; break;
+			case 6: System.out.println("FUNKTION WIRD NOCH NICHT UNTERSTUETZT!"); break;
+			case 7: statAPI.getTagClassHierarchy(session); break;
+			case 8: statAPI.getPopularComments(session, getMinimumLikes()); break;
+			case 9: statAPI.getMostPostingCountry(session); break;
+			default: exit = true; break;
+		}
+	}
+	
+	public void printMenu() {
+		System.out.println("\n----------------------------------------------");
 		System.out.println("DBPraktikum - Teil 3");
-		System.out.println("Geben sie ihre ID ein:");
-		long personID = scanner.nextLong();
 		System.out.println("Optionen für Eingabe:");
 		System.out.println("0 - Exit");
+		System.out.println("----------------------------------------------");
 		System.out.println("PersonRelatedAPI:");
 		System.out.println("1 - getProfile");
 		System.out.println("2 - getCommonInterestOfMyFriends");
@@ -37,27 +62,21 @@ public class Application {
 		System.out.println("4 - getPersonsWithMostCommonInterests");
 		System.out.println("5 - getJobRecommendations");
 		System.out.println("6 - getShortestFriendshipPath:");
+		System.out.println("----------------------------------------------");
 		System.out.println("StatisticAPI:");
 		System.out.println("7 - getTagClassHierarchy");
 		System.out.println("8 - getPopularComments");
 		System.out.println("9 - getMostPostingCountry");
+		System.out.println("----------------------------------------------");
 		System.out.println("Eingabe:");
-		int in = scanner.nextInt();
-		
-		switch(in) {
-			case 0: System.exit(0); break;
-			case 1: priAPI.getProfile(personID, session); break;
-			case 2: priAPI.getCommonInterestOfMyFriends(personID, session); break;
-			case 3: priAPI.getCommonFriends(personID, readID(), session); break;
-			case 4: priAPI.getPersonsWithMostCommonInterests(personID, session); break;
-			case 5: priAPI.getJobRecommendations(personID, session);; break;
-			case 6: System.err.println("FUNKTION WIRD NOCH NICHT UNTERSTÜTZT!"); break;
-			case 7: statAPI.getTagClassHierarchy(session); break;
-			case 8: statAPI.getPopularComments(session, getMinimumLikes()); break;
-			case 9: statAPI.getMostPostingCountry(session); break;
-			default: System.exit(0); break;
+	}
+
+	public void startApplication() {
+		while(!exit) {
+			printMenu();
+			int selection = readSelection();
+			performAction(selection);
 		}
-		
 		System.out.println("Ende der Application");
 	}
 	
@@ -65,22 +84,21 @@ public class Application {
 		Scanner scanner = new Scanner(System.in);
 		boolean flag = false;
 		long id = 0L;
-		System.out.println("Geben sie eine weitere ID ein:");
+		System.out.println("Geben Sie eine ID ein:");
 		while(!flag) {
 			try {
-				id = scanner.nextLong();
+				id = Long.parseLong(scanner.nextLine());
 				flag = true;
 			} catch (Exception ex) {
-				System.out.println("Geben sie eine valide ID ein!");
+				System.out.println("Geben Sie eine valide ID ein!");
 				flag = false;
 			}
 		}
-		scanner.close();
 		return id;
 	}
 
 	public int getMinimumLikes() {
-		System.out.println("Geben sie die Anzahl der minimalen Likes ein:");
+		System.out.println("Geben Sie die Anzahl der minimalen Likes ein:");
 		Scanner scanner = new Scanner(System.in);
 		boolean flag = false;
 		int minLikes = 0;
@@ -93,7 +111,6 @@ public class Application {
 				flag = false;
 			}
 		}
-		scanner.close();
 		return minLikes;
 	}
 }

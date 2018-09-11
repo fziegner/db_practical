@@ -1,6 +1,5 @@
 package api;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,7 +11,6 @@ import java.util.Set;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
-import model.Comments;
 import model.Company;
 import model.Organization;
 import model.Person;
@@ -79,7 +77,7 @@ public class PersonRelatedImpl implements PersonRelatedAPI {
 			for (Iterator<Person> itr = person1.getFriends().keySet().iterator(); itr.hasNext(); ) {
 				Person friend = itr.next();
 				if(friend.getPersonID() != person1.getPersonID() && person2.getFriends().containsKey(friend)) {
-					System.out.println("Id: " + friend.getPersonID() + " Name: " + friend.getFirstName() + friend.getLastName());
+					System.out.println("Id: " + friend.getPersonID() + " Name: " + friend.getFirstName() + " " + friend.getLastName());
 				}
 			}
 		} catch (Exception ex) {
