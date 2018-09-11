@@ -35,6 +35,7 @@ public abstract class Organization {
 	}
 	
 	public String toString() {
-		return Integer.toString(id);
+		//return Integer.toString(id);
+		return name;
 	}
 }

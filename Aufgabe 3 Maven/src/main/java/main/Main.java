@@ -35,8 +35,8 @@ public class Main {
 		//api2.getPopularComments(session, 0);
 		//api.getCommonInterestOfMyFriends(96L, session);
 		//api.getPersonsWithMostCommonInterests(96L, session);
+		api.getJobRecommendations(96L, session);
 		
-		System.out.println(api.getPerson(2199023255625L, session).getWorkAt());
 		session.close();
 		hibernate.exit();
 	}

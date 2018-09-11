@@ -14,5 +14,7 @@ public interface PersonRelatedAPI {
 	
 	public void getPersonsWithMostCommonInterests(long personID, Session session); 
 	
+	public void getJobRecommendations(long personID, Session session);
+	
 	public Person getPerson(long personID, Session session);
 }

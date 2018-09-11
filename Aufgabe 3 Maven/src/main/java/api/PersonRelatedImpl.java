@@ -1,17 +1,25 @@
 package api;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 import model.Comments;
+import model.Company;
+import model.Organization;
 import model.Person;
+import model.StudyAt;
 import model.Tag;
+import model.University;
+import model.WorkAt;
 
 public class PersonRelatedImpl implements PersonRelatedAPI {
 	
@@ -104,30 +112,34 @@ public class PersonRelatedImpl implements PersonRelatedAPI {
 		}
 	}
 
-	/*@Override
+	@Override
 	public void getJobRecommendations(long personID, Session session) {
-		try {
-			Person person = session.get(Person.class, personID);
-			List<Organization> recommend = new ArrayList<>();
-			
-			for(Iterator<Person> itr = person.getFriends().keySet().iterator(); itr.hasNext();) {
-				for(int i = 0; i < itr.next().getStudyat().size(); i++) {
-					recommend.add(itr.next().getStudyat().get(i).getUniversity());
-				}
-				for(int j = 0; j < itr.next().getWorkat().size(); j++) {
-					recommend.add(itr.next().getWorkat().get(j).getCompany());
+
+		Person person = getPerson(personID, session);
+		Map<Person, Calendar> friends = getPerson(personID, session).getFriends();
+		Set<Organization> potentialRecommendations = new HashSet<>();
+		for(Map.Entry<Person, Calendar> entry : friends.entrySet()) {
+			for(WorkAt workAt : entry.getKey().getWorkAt()) {
+				potentialRecommendations.add(workAt.getCompany());
+			}
+			for(StudyAt studyAt : entry.getKey().getStudyAt()) {
+				potentialRecommendations.add(studyAt.getUniversity());
+			}
+		}
+		for(Organization org : potentialRecommendations) {
+			if(org instanceof University) {
+				if(((University) org).getCity().equals(person.getCity())) {
+					System.out.println(org.toString() + " (University)");
 				}
 			}
-			
-			/*for(int k = 0; k < recommend.size(); k++) {
-				if(recommend.get(k).)
+			if(org instanceof Company) {
+				if(((Company) org).getCountry().equals(person.getCity().getCountry())) {
+					System.out.println(org.toString() + " (Company)");
+				}
 			}
-			
-		} catch (Exception ex) {
-			System.out.println("ID doesn't exist");
 		}
 	}
-	
+	/*
 	@Override
 	public void getShortestFriendshipPath(long personID1, long personID2, Session session) {
 		StoredProcedureQuery pr = session.createStoredProcedureQuery("shortestFriendshipPath");
@@ -143,4 +155,26 @@ public class PersonRelatedImpl implements PersonRelatedAPI {
 		Person person = session.get(Person.class, personID);
 		return person;
 	}
+	/*
+	 * try {
+			Person person = session.get(Person.class, personID);
+			List<Organization> recommend = new ArrayList<>();
+			
+			for(Iterator<Person> itr = person.getFriends().keySet().iterator(); itr.hasNext();) {
+				for(int i = 0; i < itr.next().getStudyat().size(); i++) {
+					recommend.add(itr.next().getStudyat().get(i).getUniversity());
+				}
+				for(int j = 0; j < itr.next().getWorkat().size(); j++) {
+					recommend.add(itr.next().getWorkat().get(j).getCompany());
+				}
+			}
+			
+			for(int k = 0; k < recommend.size(); k++) {
+				if(recommend.get(k).)
+			}
+			
+		} catch (Exception ex) {
+			System.out.println("ID doesn't exist");
+		}
+	 */
 }

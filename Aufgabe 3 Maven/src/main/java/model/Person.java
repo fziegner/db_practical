@@ -187,4 +187,8 @@ public class Person {
 			friends.put(friend, date);
 		}
 	}
+	
+	public String toString() {
+		return Long.toString(personID);
+	}
 }
