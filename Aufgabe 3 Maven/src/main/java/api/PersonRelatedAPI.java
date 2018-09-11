@@ -12,5 +12,7 @@ public interface PersonRelatedAPI {
 	
 	public void getCommonFriends(long personID1, long personID2, Session session);
 	
+	public void getPersonsWithMostCommonInterests(long personID, Session session); 
+	
 	public Person getPerson(long personID, Session session);
 }

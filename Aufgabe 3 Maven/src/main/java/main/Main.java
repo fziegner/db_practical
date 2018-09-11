@@ -32,8 +32,9 @@ public class Main {
 		//api2.getTagClassHierarchy(session);
 		//api2.getMostPostingCountry(session);
 		//hibernate.read();
-		api2.getPopularComments(session, 0);
-		api.getCommonInterestOfMyFriends(96L, session);
+		//api2.getPopularComments(session, 0);
+		//api.getCommonInterestOfMyFriends(96L, session);
+		api.getPersonsWithMostCommonInterests(96L, session);
 		session.close();
 		hibernate.exit();
 	}
