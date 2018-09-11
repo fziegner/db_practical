@@ -25,5 +25,10 @@
     	<artifactId>dom4j</artifactId>
     	<version>1.6</version>
 	</dependency>
+	<dependency>
+    	<groupId>org.antlr</groupId>
+    	<artifactId>antlr-complete</artifactId>
+    	<version>3.5.2</version>
+	</dependency>
   </dependencies>
 </project>

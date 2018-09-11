@@ -1,59 +1,43 @@
 package model;
 
-import java.util.Calendar;
+import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "Comment")
 public class Comments implements Message {
 
 	@Id
-	@Column(name = "commentID")
 	private Long commentID;
-	
-	@Column
 	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar creationDate;
-	
+	private Date creationDate;
 	@JoinColumn(name = "person")
 	private Long creatorID;
-	
-	@Column(length = 64)
 	private String browserUsed;
-	
-	@Column(nullable = false)
 	private String locationIP;
-	
-	@Column(columnDefinition = "text")
-	private String text;
-	
+	private String content;
 	private int length;
-	
 	@JoinColumn(name = "comment")
 	private Long replyOfComment;
-	
 	@JoinColumn(name = "post")
 	private Long replyOfPost;
 	
-	@Column(nullable = false)
-	@JoinColumn(name = "country")
-	private int location;
+	@ManyToOne
+	@JoinColumn(name = "location")
+	private Country location;
 
 	public Comments() {
 	}
 
-	public Comments(Long commentID, Calendar creationDate, Long creatorID, String browserUsed, String locationIP, String text, int length, Long replyOfComment, Long replyOfPost, int location) {
+	public Comments(Long commentID, Date creationDate, Long creatorID, String browserUsed, String locationIP,
+			String content, int length, Long replyOfComment, Long replyOfPost, Country location) {
 		this.commentID = commentID;
 		this.creationDate = creationDate;
 		this.creatorID = creatorID;
 		this.browserUsed = browserUsed;
 		this.locationIP = locationIP;
-		this.text = text;
+		this.content = content;
 		this.length = length;
 		this.replyOfComment = replyOfComment;
 		this.replyOfPost = replyOfPost;
@@ -64,11 +48,15 @@ public class Comments implements Message {
 		return commentID;
 	}
 
-	public Calendar getCreationDate() {
+	public void setCommentID(Long commentID) {
+		this.commentID = commentID;
+	}
+
+	public Date getCreationDate() {
 		return creationDate;
 	}
 
-	public void setCreationDate(Calendar creationDate) {
+	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
 	}
 
@@ -96,12 +84,12 @@ public class Comments implements Message {
 		this.locationIP = locationIP;
 	}
 
-	public String getText() {
-		return text;
+	public String getContent() {
+		return content;
 	}
 
-	public void setText(String text) {
-		this.text = text;
+	public void setContent(String content) {
+		this.content = content;
 	}
 
 	public int getLength() {
@@ -128,12 +116,15 @@ public class Comments implements Message {
 		this.replyOfPost = replyOfPost;
 	}
 
-	public int getLocation() {
+	public Country getLocation() {
 		return location;
 	}
 
-	public void setLocation(int location) {
+	public void setLocation(Country location) {
 		this.location = location;
 	}
 	
+	public String toString() {
+		return commentID.toString();
+	}
 }

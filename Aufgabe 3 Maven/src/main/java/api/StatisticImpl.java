@@ -1,7 +1,11 @@
 package api;
 
-import org.hibernate.Session;
+import java.util.List;
 
+import org.hibernate.Session;
+import org.hibernate.query.Query;
+
+import model.Country;
 import model.TagClass;
 
 public class StatisticImpl implements StatisticAPI {
@@ -11,7 +15,6 @@ public class StatisticImpl implements StatisticAPI {
 	
 	@Override
 	public void getTagClassHierarchy(Session session) {
-		session.get(TagClass.class, 0);
 		TagClass rootTagClass = session.get(TagClass.class, 0);
 		System.out.println("0 " + rootTagClass.getTagClassName());
 		printHierarchy("0", rootTagClass);
@@ -28,5 +31,22 @@ public class StatisticImpl implements StatisticAPI {
 			}
 			i++;
 		}
+	}
+
+	@Override
+	public void getMostPostingCountry(Session session) {
+		
+		Query<Country> query = session.createQuery("from Country");
+		List<Country> countryList = query.getResultList();
+		int messageCount = 0;
+		int countryID = 0;
+		for(Country country : countryList){
+			if(messageCount < country.getComments().size() + country.getPosts().size()) {
+				messageCount = country.getComments().size() + country.getPosts().size();
+				countryID = country.getId();
+			}
+		}
+		Country country = session.get(Country.class, countryID);
+		System.out.println("Most posting Country: " + country.getName() + "\nMessages: " + (country.getComments().size() + country.getPosts().size()));
 	}
 }

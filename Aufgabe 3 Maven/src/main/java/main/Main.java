@@ -1,9 +1,18 @@
 package main;
 
+import java.util.List;
+
+import javax.persistence.TypedQuery;
+import javax.xml.stream.events.Comment;
+
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 import api.PersonRelatedImpl;
 import api.StatisticImpl;
+import model.Comments;
+import model.Country;
+import model.Post;
 
 public class Main {
 	
@@ -17,12 +26,12 @@ public class Main {
 		
 		hibernate.setup();
 		Session session = hibernate.getSessionFactory().openSession();
-		long profileID = 96;
-		long profile2 = 8796093022251L;
-		//api.getProfile(8796093022251L, session);
+
+		//api.getProfile(profileID,hibernate.getSessionFactory());
 		//api2.getTagClassHierarchy(session);
 		//hibernate.read();
-		api.getCommonFriends(profileID, profile2, session);;
+		api2.getMostPostingCountry(session);
+
 		session.close();
 		hibernate.exit();
 	}

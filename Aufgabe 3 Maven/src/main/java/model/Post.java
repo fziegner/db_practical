@@ -1,48 +1,28 @@
 package model;
 
-import java.util.Calendar;
+import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 @Entity
 public class Post implements Message {
 
 	@Id
-	@Column(name = "postID")
 	private Long postID;
-	
-	@Column
 	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar creationDate;
-	
+	private Date creationDate;
 	@JoinColumn(name = "person")
 	private Long creatorID;
-	
-	@Column(length = 32)
 	private String languageName;
-	
-	@Column(length = 128)
 	private String imageFile;
-	
-	@Column(length = 64)
 	private String browserUsed;
-	
-	@Column(nullable = false)
 	private String locationIP;
-	
-	@Column(columnDefinition = "context")
-	private String context;
-	
+	private String content;
 	private int length;
 	
-	@Column(nullable = false)
-	@JoinColumn(name = "country")
-	private int location;
+	@ManyToOne
+	@JoinColumn(name = "location")
+	private Country location;
 	
 	//TODO
 	/*@Column(nullable = false)
@@ -51,8 +31,9 @@ public class Post implements Message {
 	
 	public Post() {
 	}
-	
-	public Post(Long postID, Calendar creationDate, Long creatorID, String languageName, String imageFile, String browserUsed, String locationIP, String context, int length, int location) {
+
+	public Post(Long postID, Date creationDate, Long creatorID, String languageName, String imageFile,
+			String browserUsed, String locationIP, String content, int length, Country location) {
 		this.postID = postID;
 		this.creationDate = creationDate;
 		this.creatorID = creatorID;
@@ -60,21 +41,24 @@ public class Post implements Message {
 		this.imageFile = imageFile;
 		this.browserUsed = browserUsed;
 		this.locationIP = locationIP;
-		this.context = context;
+		this.content = content;
 		this.length = length;
 		this.location = location;
-		//this.containerForum = containerForum;
 	}
 
 	public Long getPostID() {
 		return postID;
 	}
 
-	public Calendar getCreationDate() {
+	public void setPostID(Long postID) {
+		this.postID = postID;
+	}
+
+	public Date getCreationDate() {
 		return creationDate;
 	}
 
-	public void setCreationDate(Calendar creationDate) {
+	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
 	}
 
@@ -118,12 +102,12 @@ public class Post implements Message {
 		this.locationIP = locationIP;
 	}
 
-	public String getContext() {
-		return context;
+	public String getContent() {
+		return content;
 	}
 
-	public void setContext(String context) {
-		this.context = context;
+	public void setContent(String content) {
+		this.content = content;
 	}
 
 	public int getLength() {
@@ -134,14 +118,16 @@ public class Post implements Message {
 		this.length = length;
 	}
 
-	public int getLocation() {
+	public Country getLocation() {
 		return location;
 	}
 
-	public void setLocation(int location) {
+	public void setLocation(Country location) {
 		this.location = location;
 	}
 	
+	public String toString() {
+		return postID.toString();
+	}
 	//TODO Getter/Setter für ContainerForum
-	
 }

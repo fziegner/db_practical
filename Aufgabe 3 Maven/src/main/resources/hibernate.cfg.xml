@@ -20,6 +20,8 @@
         <mapping class="model.Place"/>
         <mapping class="model.TagClass"/>
         <mapping class="model.University"/>
+        <mapping class="model.Comments"/>
+        <mapping class="model.Post"/>
         <!--
         <mapping class="model.studyAt"/>
         <mapping class="model.workAt"/>
