@@ -19,25 +19,17 @@ public class Main {
 	
 	public static void main(String[] args) {
 		
-		System.out.println("Hallo");
-		
 		HibernateUtil hibernate = new HibernateUtil();
-		PersonRelatedImpl api = new PersonRelatedImpl();
-		StatisticImpl api2 = new StatisticImpl();
+		PersonRelatedImpl priAPI = new PersonRelatedImpl();
+		StatisticImpl statAPI = new StatisticImpl();
 		
 		hibernate.setup();
 		Session session = hibernate.getSessionFactory().openSession();
-
-		//api.getProfile(profileID,hibernate.getSessionFactory());
-		//api2.getTagClassHierarchy(session);
-		//api2.getMostPostingCountry(session);
-		//hibernate.read();
-		//api2.getPopularComments(session, 0);
-		//api.getCommonInterestOfMyFriends(96L, session);
-		//api.getPersonsWithMostCommonInterests(96L, session);
-		api.getJobRecommendations(96L, session);
 		
-		session.close();
+		Application app = new Application(priAPI, statAPI, hibernate, session);
+		app.startApplication();
+		
 		hibernate.exit();
+		
 	}
 }
