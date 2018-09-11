@@ -5,7 +5,7 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Entity
-public class Post implements Message {
+public class Post {
 
 	@Id
 	private Long postID;

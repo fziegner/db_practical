@@ -26,6 +26,9 @@ public class PersonRelatedImpl implements PersonRelatedAPI {
 	public PersonRelatedImpl() {
 	}
 
+	/**
+	 * Shows data of person related to the given personID
+	 */
 	@Override
 	public void getProfile(long personID, Session session) {
 		try {
@@ -42,6 +45,9 @@ public class PersonRelatedImpl implements PersonRelatedAPI {
 		}
 	}
 	
+	/**
+	 * Outputs common interest of a person and his friends by a given personID
+	 */
 	@Override
 	public void getCommonInterestOfMyFriends(long personID, Session session) {
 		try {
@@ -62,6 +68,9 @@ public class PersonRelatedImpl implements PersonRelatedAPI {
 		}
 	}
 	
+	/**
+	 * Prints common friends of two persons given their personIds
+	 */
 	@Override
 	public void getCommonFriends(long personID1, long personID2, Session session) {
 		try {
@@ -78,6 +87,9 @@ public class PersonRelatedImpl implements PersonRelatedAPI {
 		}
 	}
 	
+	/**
+	 * Outputs person with most common interests to a given personID
+	 */
 	@Override
 	public void getPersonsWithMostCommonInterests(long personID, Session session) {
 		Person person = session.get(Person.class, personID);
@@ -112,6 +124,9 @@ public class PersonRelatedImpl implements PersonRelatedAPI {
 		}
 	}
 
+	/**
+	 * Prints job recommendations to a given personID by acknowledging friends jobs and location 
+	 */
 	@Override
 	public void getJobRecommendations(long personID, Session session) {
 
@@ -140,6 +155,10 @@ public class PersonRelatedImpl implements PersonRelatedAPI {
 		}
 	}
 
+	/**
+	 * Function to get a person to a given personID
+	 * returns person
+	 */
 	@Override
 	public Person getPerson(long personID, Session session) {
 		Person person = session.get(Person.class, personID);

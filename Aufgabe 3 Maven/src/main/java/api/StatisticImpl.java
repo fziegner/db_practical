@@ -16,6 +16,9 @@ public class StatisticImpl implements StatisticAPI {
 	public StatisticImpl() {
 	}
 	
+	/**
+	 * Prints Tag Class Hierarchy
+	 */
 	@Override
 	public void getTagClassHierarchy(Session session) {
 		TagClass rootTagClass = session.get(TagClass.class, 0);
@@ -36,6 +39,9 @@ public class StatisticImpl implements StatisticAPI {
 		}
 	}
 
+	/**
+	 * Function to get the most posting country by total posts
+	 */
 	@Override
 	public void getMostPostingCountry(Session session) {
 		
@@ -53,6 +59,9 @@ public class StatisticImpl implements StatisticAPI {
 		System.out.println("Most posting Country: " + country.getName() + "\nMessages: " + (country.getComments().size() + country.getPosts().size()));
 	}
 
+	/**
+	 * Function to get the most popular Comment by total likes
+	 */
 	@Override
 	public void getPopularComments(Session session, int minimumLikes) {
 		Query<Comments> query = session.createQuery("from Comments");

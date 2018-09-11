@@ -51,7 +51,7 @@ public class Application {
 			case 3: priAPI.getCommonFriends(personID, readID(), session); break;
 			case 4: priAPI.getPersonsWithMostCommonInterests(personID, session); break;
 			case 5: priAPI.getJobRecommendations(personID, session);; break;
-			case 6: System.out.println("FUNKTION WIRD NOCH NICHT UNTERSTÜTZT!"); break;
+			case 6: System.err.println("FUNKTION WIRD NOCH NICHT UNTERSTÜTZT!"); break;
 			case 7: statAPI.getTagClassHierarchy(session); break;
 			case 8: statAPI.getPopularComments(session, getMinimumLikes()); break;
 			case 9: statAPI.getMostPostingCountry(session); break;
@@ -65,7 +65,7 @@ public class Application {
 		Scanner scanner = new Scanner(System.in);
 		boolean flag = false;
 		long id = 0L;
-		System.out.println("Geben sie ihre ID ein:");
+		System.out.println("Geben sie eine weitere ID ein:");
 		while(!flag) {
 			try {
 				id = scanner.nextLong();

@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "Comment")
-public class Comments implements Message {
+public class Comments {
 
 	@Id
 	private Long commentID;
