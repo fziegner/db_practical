@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -23,15 +24,21 @@ public class Comments implements Message {
 	@JoinColumn(name = "post")
 	private Long replyOfPost;
 	
+	@ManyToMany
+	@JoinTable(name = "likes_comment",
+			   joinColumns = {@JoinColumn(name = "commentid")},
+			   inverseJoinColumns = {@JoinColumn(name = "personid")})
+	private List<Person> likes;
+	
 	@ManyToOne
 	@JoinColumn(name = "location")
 	private Country location;
 
 	public Comments() {
 	}
-
+	
 	public Comments(Long commentID, Date creationDate, Long creatorID, String browserUsed, String locationIP,
-			String content, int length, Long replyOfComment, Long replyOfPost, Country location) {
+			String content, int length, Long replyOfComment, Long replyOfPost, List<Person> likes, Country location) {
 		this.commentID = commentID;
 		this.creationDate = creationDate;
 		this.creatorID = creatorID;
@@ -41,9 +48,10 @@ public class Comments implements Message {
 		this.length = length;
 		this.replyOfComment = replyOfComment;
 		this.replyOfPost = replyOfPost;
+		this.likes = likes;
 		this.location = location;
 	}
-
+	
 	public Long getCommentID() {
 		return commentID;
 	}
@@ -116,6 +124,14 @@ public class Comments implements Message {
 		this.replyOfPost = replyOfPost;
 	}
 
+	public List<Person> getLikes() {
+		return likes;
+	}
+
+	public void setLikes(List<Person> likes) {
+		this.likes = likes;
+	}
+
 	public Country getLocation() {
 		return location;
 	}
@@ -123,7 +139,7 @@ public class Comments implements Message {
 	public void setLocation(Country location) {
 		this.location = location;
 	}
-	
+
 	public String toString() {
 		return commentID.toString();
 	}

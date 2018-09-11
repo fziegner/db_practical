@@ -1,10 +1,12 @@
 package api;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
+import model.Comments;
 import model.Country;
 import model.TagClass;
 
@@ -48,5 +50,15 @@ public class StatisticImpl implements StatisticAPI {
 		}
 		Country country = session.get(Country.class, countryID);
 		System.out.println("Most posting Country: " + country.getName() + "\nMessages: " + (country.getComments().size() + country.getPosts().size()));
+	}
+
+	@Override
+	public void getPopularComments(Session session, int minimumLikes) {
+		Query<Comments> query = session.createQuery("from Comments");
+		List<Comments> commentsList = query.getResultList();
+		List<Comments> popularComments = new ArrayList<>();
+		for(Comments comment : commentsList) {
+			System.out.println(comment + " : " + comment.getLikes().size());
+		}
 	}
 }

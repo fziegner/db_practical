@@ -12,6 +12,7 @@ import api.PersonRelatedImpl;
 import api.StatisticImpl;
 import model.Comments;
 import model.Country;
+import model.Person;
 import model.Post;
 
 public class Main {
@@ -29,8 +30,9 @@ public class Main {
 
 		//api.getProfile(profileID,hibernate.getSessionFactory());
 		//api2.getTagClassHierarchy(session);
+		//api2.getMostPostingCountry(session);
 		//hibernate.read();
-		api2.getMostPostingCountry(session);
+		api2.getPopularComments(session, 2);
 
 		session.close();
 		hibernate.exit();

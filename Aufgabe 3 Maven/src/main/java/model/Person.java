@@ -4,18 +4,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapKeyJoinColumn;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 @Entity
 public class Person {
@@ -36,13 +28,18 @@ public class Person {
 	@JoinColumn(name = "city")
 	private City city;
 	
+	@ManyToMany(mappedBy = "likes")
+	private List<Comments> likedComments;
+	
+	@ManyToMany(mappedBy = "interestedPersons")
+	private List<Tag> interests;
+	
 	//@OneToMany(mappedBy="person")
 	//private List<studyAt> studyat = new ArrayList<studyAt>();
 			
 	//@OneToMany(mappedBy="person")
 	//private List<workAt> workat = new ArrayList<workAt>();
 	
-
 	@ElementCollection
 	@CollectionTable(name = "pkp_symmetric", joinColumns = @JoinColumn(name = "personOne"))
 	@Column(name = "creationDate", nullable = false)
@@ -52,9 +49,10 @@ public class Person {
 
 	public Person() {
 	}
-	
-	public Person(long personID, Date creationDate, String firstName, String lastName, String gender,
-			Date birthday, String browserUsed, String locationIP, City city) {
+
+	public Person(long personID, Date creationDate, String firstName, String lastName, String gender, Date birthday,
+			String browserUsed, String locationIP, City city, List<Comments> likedComments, List<Tag> interests,
+			Map<Person, Calendar> friends) {
 		this.personID = personID;
 		this.creationDate = creationDate;
 		this.firstName = firstName;
@@ -64,8 +62,11 @@ public class Person {
 		this.browserUsed = browserUsed;
 		this.locationIP = locationIP;
 		this.city = city;
+		this.likedComments = likedComments;
+		this.interests = interests;
+		this.friends = friends;
 	}
-
+	
 	public long getPersonID() {
 		return personID;
 	}
@@ -137,23 +138,23 @@ public class Person {
 	public void setCity(City city) {
 		this.city = city;
 	}
-	
-	//public List<studyAt> getStudyat() {
-		//return studyat;
-	//}
 
-	//public void setStudyat(List<studyAt> studyat) {
-		//this.studyat = studyat;
-	//}
+	public List<Comments> getLikedComments() {
+		return likedComments;
+	}
 
-	//public List<workAt> getWorkat() {
-		//return workat;
-	//}
+	public void setLikedComments(List<Comments> likedComments) {
+		this.likedComments = likedComments;
+	}
 
-	//public void setWorkat(List<workAt> workat) {
-		//this.workat = workat;
-	//}
-	
+	public List<Tag> getInterests() {
+		return interests;
+	}
+
+	public void setInterests(List<Tag> interests) {
+		this.interests = interests;
+	}
+
 	public Map<Person, Calendar> getFriends() {
 		return friends;
 	}
@@ -162,6 +163,22 @@ public class Person {
 		this.friends = friends;
 	}
 	
+	//public List<studyAt> getStudyat() {
+	//return studyat;
+	//}
+
+	//public void setStudyat(List<studyAt> studyat) {
+	//this.studyat = studyat;
+	//}
+
+	//public List<workAt> getWorkat() {
+	//return workat;
+	//}
+
+	//public void setWorkat(List<workAt> workat) {
+	//this.workat = workat;
+	//}
+
 	public void addFriend(Person friend) {
 		if(friends.containsKey(friend) != true) {
 			Calendar date = new GregorianCalendar();
