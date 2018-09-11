@@ -34,11 +34,11 @@ public class Person {
 	@ManyToMany(mappedBy = "interestedPersons")
 	private List<Tag> interests;
 	
-	//@OneToMany(mappedBy="person")
-	//private List<studyAt> studyat = new ArrayList<studyAt>();
-			
-	//@OneToMany(mappedBy="person")
-	//private List<workAt> workat = new ArrayList<workAt>();
+	@OneToMany(mappedBy = "person")
+	private List<WorkAt> workAt;
+	
+	@OneToMany(mappedBy="person")
+	private List<StudyAt> studyAt;
 	
 	@ElementCollection
 	@CollectionTable(name = "pkp_symmetric", joinColumns = @JoinColumn(name = "personOne"))
@@ -52,7 +52,7 @@ public class Person {
 
 	public Person(long personID, Date creationDate, String firstName, String lastName, String gender, Date birthday,
 			String browserUsed, String locationIP, City city, List<Comments> likedComments, List<Tag> interests,
-			Map<Person, Calendar> friends) {
+			List<WorkAt> workAt, List<StudyAt> studyAt, Map<Person, Calendar> friends) {
 		this.personID = personID;
 		this.creationDate = creationDate;
 		this.firstName = firstName;
@@ -64,9 +64,11 @@ public class Person {
 		this.city = city;
 		this.likedComments = likedComments;
 		this.interests = interests;
+		this.workAt = workAt;
+		this.studyAt = studyAt;
 		this.friends = friends;
 	}
-	
+
 	public long getPersonID() {
 		return personID;
 	}
@@ -155,6 +157,22 @@ public class Person {
 		this.interests = interests;
 	}
 
+	public List<WorkAt> getWorkAt() {
+		return workAt;
+	}
+
+	public void setWorkAt(List<WorkAt> workAt) {
+		this.workAt = workAt;
+	}
+
+	public List<StudyAt> getStudyAt() {
+		return studyAt;
+	}
+
+	public void setStudyAt(List<StudyAt> studyAt) {
+		this.studyAt = studyAt;
+	}
+
 	public Map<Person, Calendar> getFriends() {
 		return friends;
 	}
@@ -162,22 +180,6 @@ public class Person {
 	public void setFriends(Map<Person, Calendar> friends) {
 		this.friends = friends;
 	}
-	
-	//public List<studyAt> getStudyat() {
-	//return studyat;
-	//}
-
-	//public void setStudyat(List<studyAt> studyat) {
-	//this.studyat = studyat;
-	//}
-
-	//public List<workAt> getWorkat() {
-	//return workat;
-	//}
-
-	//public void setWorkat(List<workAt> workat) {
-	//this.workat = workat;
-	//}
 
 	public void addFriend(Person friend) {
 		if(friends.containsKey(friend) != true) {

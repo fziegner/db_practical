@@ -11,17 +11,17 @@ public class Company extends Organization {
 	@JoinColumn(name = "country", nullable = false)
 	private Country country;
 	
-	//@OneToMany(mappedBy="company")
-	//private List<workAt> workat = new ArrayList<workAt>();
-	
+	@OneToMany(mappedBy = "company")
+	private List<WorkAt> workAt;
+
 	public Company() {		
 	}
 
-	public Company(int companyid, Country country, List<workAt> workat) {
+	public Company(Country country, List<WorkAt> workAt) {
 		this.country = country;
-		//this.workat = workat;
+		this.workAt = workAt;
 	}
-	
+
 	public Country getCountry() {
 		return country;
 	}
@@ -30,11 +30,11 @@ public class Company extends Organization {
 		this.country = country;
 	}
 
-	//public List<workAt> getWorkat() {
-		//return workat;
-	//}
+	public List<WorkAt> getWorkAt() {
+		return workAt;
+	}
 
-	//public void setWorkat(List<workAt> workat) {
-		//this.workat = workat;
-	//}
+	public void setWorkAt(List<WorkAt> workAt) {
+		this.workAt = workAt;
+	}
 }

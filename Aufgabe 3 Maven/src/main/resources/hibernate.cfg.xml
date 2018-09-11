@@ -23,9 +23,7 @@
         <mapping class="model.Comments"/>
         <mapping class="model.Post"/>
         <mapping class="model.Tag"/>
-        <!--
-        <mapping class="model.studyAt"/>
-        <mapping class="model.workAt"/>
-        -->
+        <mapping class="model.StudyAt"/>
+        <mapping class="model.WorkAt"/>
     </session-factory>
 </hibernate-configuration>

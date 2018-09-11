@@ -23,7 +23,7 @@ public class Post implements Message {
 	@ManyToOne
 	@JoinColumn(name = "location")
 	private Country location;
-	
+
 	//TODO
 	/*@Column(nullable = false)
 	@JoinColumn

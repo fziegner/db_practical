@@ -11,15 +11,15 @@ public class University extends Organization {
 	@JoinColumn(name = "city")
 	private City city;
 	
-	//@OneToMany(mappedBy="university")
-	//private List<studyAt> studyat = new ArrayList<studyAt>();
+	@OneToMany(mappedBy="university")
+	private List<StudyAt> studyat;
 
 	public University() {
 	}
 
-	public University(int universityid, City city, List<studyAt> studyat) {
+	public University(int universityid, City city, List<StudyAt> studyat) {
 		this.city = city;
-		//this.studyat = studyat;
+		this.studyat = studyat;
 	}
 
 	public City getCity() {
@@ -30,11 +30,11 @@ public class University extends Organization {
 		this.city = city;
 	}
 
-	//public List<studyAt> getStudyat() {
-		//return studyat;
-	//}
+	public List<StudyAt> getStudyat() {
+		return studyat;
+	}
 
-	//public void setStudyat(List<studyAt> studyat) {
-		//this.studyat = studyat;
-	//}
+	public void setStudyat(List<StudyAt> studyat) {
+		this.studyat = studyat;
+	}
 }
