@@ -1,10 +1,14 @@
 package api;
 
+import java.util.Calendar;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Session;
 
 import model.Person;
+import model.Tag;
 
 public class PersonRelatedImpl implements PersonRelatedAPI {
 	
@@ -30,7 +34,18 @@ public class PersonRelatedImpl implements PersonRelatedAPI {
 	@Override
 	public void getCommonInterestOfMyFriends(long personID, Session session) {
 		try {
+			Person person = session.get(Person.class, personID);
+			Map<Person, Calendar> friends = person.getFriends();
+			List<Tag> personInterest = person.getInterests();
 			
+			for(Iterator<Person> itr = friends.keySet().iterator(); itr.hasNext();) {
+				Person friend = itr.next();
+				for(int i = 0; i < friend.getInterests().size(); i++) {
+					if(personInterest.contains(friend.getInterests().get(i))) {
+						System.out.println(friend.getInterests().get(i).getTagID() + " " + friend.getInterests().get(i).getTagName() + " - " + friend.getFirstName() + " " + friend.getLastName());
+					}
+				}
+			}
 		} catch (Exception ex) {
 			System.out.println("ID doesn't exist");
 		}

@@ -33,7 +33,7 @@ public class Main {
 		//api2.getMostPostingCountry(session);
 		//hibernate.read();
 		api2.getPopularComments(session, 0);
-
+		api.getCommonInterestOfMyFriends(96L, session);
 		session.close();
 		hibernate.exit();
 	}
