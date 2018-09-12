@@ -41,7 +41,12 @@ public class Application {
 				break;
 			case 4: priAPI.getPersonsWithMostCommonInterests(readID(), session); break;
 			case 5: priAPI.getJobRecommendations(readID(), session);; break;
-			case 6: System.out.println("FUNKTION WIRD NOCH NICHT UNTERSTUETZT!"); break;
+			case 6: 
+				System.out.println("ID 1");
+				long pid1 = readID();
+				System.out.println("ID 2");
+				long pid2 = readID();
+				priAPI.getShortestFriendshipPath(pid1, pid2, session);
 			case 7: statAPI.getTagClassHierarchy(session); break;
 			case 8: statAPI.getPopularComments(session, getMinimumLikes()); break;
 			case 9: statAPI.getMostPostingCountry(session); break;

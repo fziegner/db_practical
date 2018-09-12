@@ -1,5 +1,6 @@
 package api;
 
+import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -7,6 +8,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureQuery;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -151,6 +155,16 @@ public class PersonRelatedImpl implements PersonRelatedAPI {
 				}
 			}
 		}
+	}
+	
+	public void getShortestFriendshipPath(long personID1, long personID2, Session session) {
+		StoredProcedureQuery spq = session.createStoredProcedureQuery("getShortestFriendshipPath");
+		spq.registerStoredProcedureParameter(1, Long.class, ParameterMode.IN);
+		spq.registerStoredProcedureParameter(2, Long.class, ParameterMode.IN);
+		spq.setParameter(1, personID1);
+		spq.setParameter(2, personID2);
+		List<String> results = spq.getResultList();
+		System.out.println(results.toString());
 	}
 
 	/**

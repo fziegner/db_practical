@@ -16,5 +16,7 @@ public interface PersonRelatedAPI {
 	
 	public void getJobRecommendations(long personID, Session session);
 	
+	public void getShortestFriendshipPath(long personID1, long personID2, Session session);
+	
 	public Person getPerson(long personID, Session session);
 }
